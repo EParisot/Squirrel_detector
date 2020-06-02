@@ -49,7 +49,7 @@ def stop_wifi():
     res = subprocess.check_output("ip a | grep wlan0 | grep state", shell=True)
     if str(res).split("state ")[1][:2] != "UP":
         logger.info("shuting down wifi...")
-        #TODO
+        subprocess.check_output("rfkill block all")
         wifi_state = False
         GPIO.output(orange, GPIO.LOW)
 

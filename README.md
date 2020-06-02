@@ -3,5 +3,5 @@ Squirrel_detector
 
 add a cron:
 ```
-@reboot cd /home/pi/Squirrel_detector && python3 Squirrel_detector.py &
+@reboot sudo rfkill unblock wifi && cd /home/pi/Squirrel_detector && sudo python3 Squirrel_detector.py &
 ```
