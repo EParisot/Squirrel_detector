@@ -1,4 +1,3 @@
-import subprocess
 import RPi.GPIO as GPIO
 import time
 from picamera import PiCamera
@@ -34,9 +33,6 @@ GPIO.output(orange, GPIO.HIGH)
 GPIO.output(green, GPIO.HIGH)
 
 threshold = 49
-wifi_timeout = 30.
-start_time = time.time()
-wifi_state = True
 
 def take_snap():
     with PiCamera() as camera:
@@ -45,19 +41,19 @@ def take_snap():
         camera.capture(filename)
         GPIO.output(red, GPIO.HIGH)
 
-def stop_wifi():
-    res = subprocess.check_output("ip a | grep wlan0 | grep state", shell=True)
-    if str(res).split("state ")[1][:2] != "UP":
-        logger.info("shuting down wifi...")
-        subprocess.check_output("rfkill block all")
-        wifi_state = False
-        GPIO.output(orange, GPIO.LOW)
+def test_snap():
+    try:
+        take_snap()
+    except Exception as e:
+        logger.debug(str(e))
+        exit()
+    time.sleep(3)
+    GPIO.output(red, GPIO.LOW)
 
 try:
+    test_snap()
     while True:
-
        time.sleep(1)
-
        GPIO.output(Trig, True)
        time.sleep(0.00001)
        GPIO.output(Trig, False)
@@ -65,16 +61,11 @@ try:
          startImpulse = time.time()
        while GPIO.input(Echo)==1:   ## echo back
          endImpulse = time.time()
-       distance = round((endImpulse - startImpulse) * 340 * 100 / 2, 1)  ## speed of sound = 340 m/s
-       
+       distance = round((endImpulse - startImpulse) * 340 * 100 / 2, 1)  ## speed of sound = 340 m/s       
        if distance < threshold:
            take_snap()
-       if time.time() - start_time > wifi_timeout and wifi_state == True:
-          stop_wifi()
-          wifi_state = False
-
-except KeyboardInterrupt:
-    pass
+except Exception as e:
+    logger.debug(str(e))
 
 GPIO.output(red, GPIO.LOW)
 GPIO.output(orange, GPIO.LOW)
