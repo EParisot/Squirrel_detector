@@ -37,3 +37,5 @@ sudo raspi-config
 
 ### Reboot and install everything... 
 A camera test shot is made on start (orange LED turned ON 3s and then off, after that, orange LED will be turned ON after first detection), everything is logged in activity.log file
+
+This project is under MIT licence which means you can share, use, modify it if you cite the author (me)... Thanks !
