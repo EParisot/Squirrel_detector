@@ -1,7 +1,7 @@
 # Squirrel_detector
 Squirrel_detector
 
-![](imgs/1591654076.6840587.png)
+![](imgs/1591654076.6840587.jpg)
 ![](imgs/download_20200602_151308.jpg) ![](imgs/download_20200602_151311.jpg)
 
 ## Material:
@@ -21,15 +21,13 @@ LEDs and resistors... (optional)
 You may need to adapt the threshold variable depending on your installation... Mine is 50cm long from detector to feedingbox, so the value should be distance - 1 (to avoid false positives)
 
 ### wire distance sensor
-![](imgs/Schema-Branchement-Raspberry-Model.3-HC-SR04.png)
+![](imgs/Schema-Branchement-Raspberry-Model.3-HC-SR04.jpg)
 
 ### wire camera and activate it
 ```
 sudo raspi-config
 -> interfaces -> camera -> activate OK
 ```
-
-
 
 ### add a cron:
 ```
