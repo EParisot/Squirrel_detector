@@ -1,7 +1,8 @@
 # Squirrel_detector
 Squirrel_detector
 
-![](imgs/img1.bmp)  
+![](imgs/1591654076.6840587.png)
+![](imgs/download_20200602_151308.jpg) ![](imgs/download_20200602_151311.jpg)
 
 add a cron:
 ```
