@@ -32,6 +32,7 @@ GPIO.output(red, GPIO.LOW)
 GPIO.output(orange, GPIO.LOW)
 GPIO.output(green, GPIO.HIGH)
 
+# EDIT if needed :
 threshold = 49
 
 def take_snap():

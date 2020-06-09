@@ -16,12 +16,25 @@ LEDs and resistors... (optional)
 
 ## instructions:
 
-clone the repo
+### clone the repo
 
-add a cron:
+You may need to adapt the threshold variable depending on your installation... Mine is 50cm long from detector to feedingbox, so the value should be distance - 1 (to avoid false positives)
+
+### wire distance sensor
+![](imgs/Schema-Branchement-Raspberry-Model.3-HC-SR04.png)
+
+### wire camera and activate it
+```
+sudo raspi-config
+-> interfaces -> camera -> activate OK
+```
+
+
+
+### add a cron:
 ```
 @reboot cd /home/pi/Squirrel_detector && python3 Squirrel_detector.py &
 ```
 
-Reboot and install everything... 
+### Reboot and install everything... 
 A camera test shot is made on start (orange LED turned ON 3s and then off, after that, orange LED will be turned ON after first detection), everything is logged in activity.log file
