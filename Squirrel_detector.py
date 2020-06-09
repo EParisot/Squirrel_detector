@@ -29,7 +29,7 @@ GPIO.setup(red, GPIO.OUT)
 GPIO.setup(orange, GPIO.OUT)
 GPIO.setup(green, GPIO.OUT)
 GPIO.output(red, GPIO.LOW)
-GPIO.output(orange, GPIO.HIGH)
+GPIO.output(orange, GPIO.LOW)
 GPIO.output(green, GPIO.HIGH)
 
 threshold = 49
@@ -39,7 +39,7 @@ def take_snap():
         filename = "out/" + str(time.time()) + ".png"
         logger.info("captured %s" % filename)
         camera.capture(filename)
-        GPIO.output(red, GPIO.HIGH)
+        GPIO.output(orange, GPIO.HIGH)
 
 def test_snap():
     try:
@@ -48,7 +48,7 @@ def test_snap():
         logger.debug(str(e))
         exit()
     time.sleep(3)
-    GPIO.output(red, GPIO.LOW)
+    GPIO.output(orange, GPIO.LOW)
 
 try:
     test_snap()
@@ -66,8 +66,8 @@ try:
            take_snap()
 except Exception as e:
     logger.debug(str(e))
+    GPIO.output(red, GPIO.LOW)
 
-GPIO.output(red, GPIO.LOW)
 GPIO.output(orange, GPIO.LOW)
 GPIO.output(green, GPIO.LOW)
 GPIO.cleanup()
