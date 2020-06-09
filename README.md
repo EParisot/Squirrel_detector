@@ -18,7 +18,7 @@ LEDs and resistors... (optional)
 
 ### clone the repo
 
-You may need to adapt the threshold variable depending on your installation... Mine is 50cm long from detector to feedingbox, so the value should be distance - 1 (to avoid false positives)
+You may need to adapt the threshold variable depending on your installation... Mine is 50cm long from detector to feedingbox, so the threshold value should be distance - 1 (to avoid false positives)
 
 ### wire distance sensor
 ![](imgs/Schema-Branchement-Raspberry-Model.3-HC-SR04.jpg)
