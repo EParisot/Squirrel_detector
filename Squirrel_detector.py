@@ -1,8 +1,12 @@
-import RPi.GPIO as GPIO
 import time
 from picamera import PiCamera
-import logging
+import board
+import busio
+import adafruit_vl53l0x
+i2c = busio.I2C(board.SCL, board.SDA)
+sensor = adafruit_vl53l0x.VL53L0X(i2c)
 
+import logging
 from logging.handlers import RotatingFileHandler
 
 logger = logging.getLogger()
@@ -16,59 +20,29 @@ stream_handler = logging.StreamHandler()
 stream_handler.setLevel(logging.DEBUG)
 logger.addHandler(stream_handler)
 
-GPIO.setmode(GPIO.BCM)
-Trig = 23          # Trig HC-SR04 GPIO 23
-Echo = 24          # Echo HC-SR04 GPIO 24
-GPIO.setup(Trig,GPIO.OUT)
-GPIO.setup(Echo,GPIO.IN)
-GPIO.output(Trig, False)
-red = 21
-orange = 20
-green = 16
-GPIO.setup(red, GPIO.OUT)
-GPIO.setup(orange, GPIO.OUT)
-GPIO.setup(green, GPIO.OUT)
-GPIO.output(red, GPIO.LOW)
-GPIO.output(orange, GPIO.LOW)
-GPIO.output(green, GPIO.HIGH)
-
-# EDIT if needed :
 threshold = 49
 
 def take_snap():
-    with PiCamera() as camera:
-        filename = "out/" + str(time.time()) + ".png"
-        logger.info("captured %s" % filename)
-        camera.capture(filename)
-        GPIO.output(orange, GPIO.HIGH)
+	with PiCamera() as camera:
+		filename = "out/" + str(time.time()) + ".png"
+		logger.info("captured %s" % filename)
+		camera.capture(filename)
 
 def test_snap():
-    try:
-        take_snap()
-    except Exception as e:
-        logger.debug(str(e))
-        exit()
-    time.sleep(3)
-    GPIO.output(orange, GPIO.LOW)
+	try:
+		take_snap()
+	except Exception as e:
+		logger.debug(str(e))
+		exit()
 
-try:
-    test_snap()
-    while True:
-       time.sleep(1)
-       GPIO.output(Trig, True)
-       time.sleep(0.00001)
-       GPIO.output(Trig, False)
-       while GPIO.input(Echo)==0:   ## ultrasonic emit
-         startImpulse = time.time()
-       while GPIO.input(Echo)==1:   ## echo back
-         endImpulse = time.time()
-       distance = round((endImpulse - startImpulse) * 340 * 100 / 2, 1)  ## speed of sound = 340 m/s       
-       if distance < threshold:
-           take_snap()
-except Exception as e:
-    logger.debug(str(e))
-    GPIO.output(red, GPIO.LOW)
-
-GPIO.output(orange, GPIO.LOW)
-GPIO.output(green, GPIO.LOW)
-GPIO.cleanup()
+if __name__ == "__main__":
+	try:
+		test_snap()
+		while True:
+			time.sleep(1)
+			distance = sensor.range // 10
+			logger.debug(distance)
+			if distance < threshold:
+				take_snap()
+	except Exception as e:
+		logger.debug(str(e))
