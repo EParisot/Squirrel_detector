@@ -5,6 +5,7 @@ import busio
 import adafruit_vl53l0x
 i2c = busio.I2C(board.SCL, board.SDA)
 sensor = adafruit_vl53l0x.VL53L0X(i2c)
+sensor.measurement_timing_budget = 200000
 
 import logging
 from logging.handlers import RotatingFileHandler
@@ -20,10 +21,10 @@ stream_handler = logging.StreamHandler()
 stream_handler.setLevel(logging.DEBUG)
 logger.addHandler(stream_handler)
 
-threshold = 49
+threshold = 48
 
 def take_snap():
-	with PiCamera() as camera:
+	with PiCamera(resolution=(1920, 1080)) as camera:
 		filename = "out/" + str(time.time()) + ".png"
 		logger.info("captured %s" % filename)
 		camera.capture(filename)
@@ -42,7 +43,7 @@ if __name__ == "__main__":
 			time.sleep(1)
 			distance = sensor.range // 10
 			logger.debug(distance)
-			if distance < threshold:
+			if distance > 0 and distance < threshold:
 				take_snap()
 	except Exception as e:
 		logger.debug(str(e))
