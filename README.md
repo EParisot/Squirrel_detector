@@ -2,7 +2,7 @@
 Squirrel_detector
 
 ![](imgs/1591654076.6840587.jpg)
-![](imgs/download_20200602_151308.jpg) ![](imgs/download_20200602_151311.jpg)
+![](imgs/download_20200602_151311.jpg)
 
 ## Material:
 ```
