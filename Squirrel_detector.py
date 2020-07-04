@@ -42,7 +42,7 @@ if __name__ == "__main__":
 		while True:
 			time.sleep(1)
 			distance = sensor.range // 10
-			logger.debug(distance)
+			#logger.debug(distance)
 			if distance > 0 and distance < threshold:
 				take_snap()
 	except Exception as e:
