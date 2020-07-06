@@ -1,0 +1,2 @@
+pybluez
+-e https://github.com/BlackLight/PyOBEX.git
