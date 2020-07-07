@@ -1,5 +1,6 @@
 import os
 import shutil
+from unittest.mock import patch
 import time
 import subprocess
 from bluetooth import *
@@ -23,6 +24,15 @@ advertise_service( server_sock, "SQRT",
 
 def build_command(addr, chan, src):
 	return "obexftp --nopath --noconn --uuid none --bluetooth %s --channel %s -p %s" % (addr, chan, src)
+
+""" The script manipulates the make_archive() implementation for 
+	zip files by temporarily replacing os.path.isfile() with a 
+	custom accept() function. """
+_os_path_isfile = os.path.isfile
+def accept(path):
+    if path in [".gitkeep"]:
+        return False
+    return _os_path_isfile(path)
 
 while True:
 	print("Waiting for connection on RFCOMM channel %d" % port)
@@ -48,7 +58,8 @@ while True:
 		print("received [%s]" % data)
 		
 		# Zip folder
-		zipFile = shutil.make_archive(os.path.join(DST_FOLDER, "SQRT_" + time.strftime("%Y%m%d_%H%M%S")), 'zip', SRC_FOLDER, ignore=shutil.ignore_patterns(".gitkeep"))
+		with patch("os.path.isfile", side_effect=accept):
+			zipFile = shutil.make_archive(os.path.join(DST_FOLDER, "SQRT_" + time.strftime("%Y%m%d_%H%M%S")), 'zip', SRC_FOLDER)
 			
 		print("calling ", build_command(client_info[0], 
 								OBEX_CHAN, 
