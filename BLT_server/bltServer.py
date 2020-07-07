@@ -52,7 +52,7 @@ while True:
 		os.remove(os.path.join(DST_FOLDER, zipFile))
 
 		# End connexion
-		if res == 0:
+		if res == 255:
 			data = 'Sent: ' + zipFile + " done. exit"
 		else:
 			data = "Error sending archive. exit"
