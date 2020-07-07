@@ -35,6 +35,7 @@ while True:
 			continue
 		print("received [%s]" % data)
 		
+		# Zip folder
 		shutil.make_archive("tmp/SQRT", 'zip', SRC_FOLDER)
 			
 		print("calling ", build_command(client_info[0], 
@@ -43,7 +44,7 @@ while True:
 		res = subprocess.call(build_command(client_info[0], 
 								OBEX_CHAN, 
 								"tmp/SQRT.zip").split(" "))
-		print("Sent file %s with return code %s" % (f, res))
+		print("Sent archive with return code %s" % res)
 
 		# End connexion
 		data = 'GoodBye!'
