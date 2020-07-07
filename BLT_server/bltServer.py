@@ -53,7 +53,7 @@ while True:
 
 		# End connexion
 		if res == 255:
-			data = 'Sent: ' + zipFile + " done. exit"
+			data = 'Sent: ' + os.path.basename(zipFile) + " done. exit"
 		else:
 			data = "Error sending archive. exit"
 		client_sock.send(data)
