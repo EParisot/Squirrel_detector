@@ -1,5 +1,6 @@
 import os
 import shutil
+import time
 import subprocess
 from bluetooth import *
 
@@ -37,7 +38,7 @@ while True:
 		print("received [%s]" % data)
 		
 		# Zip folder
-		zipFile = shutil.make_archive(os.path.join(DST_FOLDER, "SQRT"), 'zip', SRC_FOLDER)
+		zipFile = shutil.make_archive(os.path.join(DST_FOLDER, "SQRT_" + time.strftime("%Y%m%d_%H%M%S")), 'zip', SRC_FOLDER)
 			
 		print("calling ", build_command(client_info[0], 
 								OBEX_CHAN, 
@@ -51,7 +52,10 @@ while True:
 		os.remove(os.path.join(DST_FOLDER, zipFile))
 
 		# End connexion
-		data = 'Sent:'
+		if res == 0:
+			data = 'Sent: ' + zipFile + " done. exit"
+		else:
+			data = "Error sending archive. exit"
 		client_sock.send(data)
 		print("sending [%s]" % data)
 
