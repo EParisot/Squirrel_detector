@@ -48,7 +48,7 @@ while True:
 		print("received [%s]" % data)
 		
 		# Zip folder
-		zipFile = shutil.make_archive(os.path.join(DST_FOLDER, "SQRT_" + time.strftime("%Y%m%d_%H%M%S")), 'zip', SRC_FOLDER)
+		zipFile = shutil.make_archive(os.path.join(DST_FOLDER, "SQRT_" + time.strftime("%Y%m%d_%H%M%S")), 'zip', SRC_FOLDER, ignore=shutil.ignore_patterns(".gitkeep"))
 			
 		print("calling ", build_command(client_info[0], 
 								OBEX_CHAN, 
