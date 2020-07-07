@@ -56,28 +56,30 @@ while True:
 		if len(data) == 0:
 			continue
 		print("received [%s]" % data)
-		
-		# Zip folder
-		with patch("os.path.isfile", side_effect=accept):
-			zipFile = shutil.make_archive(os.path.join(DST_FOLDER, "SQRT_" + time.strftime("%Y%m%d_%H%M%S")), 'zip', SRC_FOLDER)
+		print(data)
+		if data == "send":
+			# Zip folder
+			with patch("os.path.isfile", side_effect=accept):
+				zipFile = shutil.make_archive(os.path.join(DST_FOLDER, "SQRT_" + time.strftime("%Y%m%d_%H%M%S")), 'zip', SRC_FOLDER)
+			print("calling ", build_command(client_info[0], 
+									OBEX_CHAN, 
+									os.path.join(DST_FOLDER, zipFile)))
+			res = subprocess.call(build_command(client_info[0], 
+									OBEX_CHAN, 
+									os.path.join(DST_FOLDER, zipFile)).split(" "))
+			print("Sent archive with return code %s" % res)
+			# Clean tmp folder
+			os.remove(os.path.join(DST_FOLDER, zipFile))
+			# End connexion
+			if res == 255:
+				data = 'Sent: ' + os.path.basename(zipFile) + " done. exit"
+			else:
+				data = "Error sending archive. exit"
+			client_sock.send(data)
 			
-		print("calling ", build_command(client_info[0], 
-								OBEX_CHAN, 
-								os.path.join(DST_FOLDER, zipFile)))
-		res = subprocess.call(build_command(client_info[0], 
-								OBEX_CHAN, 
-								os.path.join(DST_FOLDER, zipFile)).split(" "))
-		print("Sent archive with return code %s" % res)
-
-		# Clean tmp folder
-		os.remove(os.path.join(DST_FOLDER, zipFile))
-
-		# End connexion
-		if res == 255:
-			data = 'Sent: ' + os.path.basename(zipFile) + " done. exit"
-		else:
-			data = "Error sending archive. exit"
-		client_sock.send(data)
+		elif "name" in data:
+			print("change name to ")
+			pass
 
 	except IOError:
 		pass
