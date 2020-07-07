@@ -41,14 +41,14 @@ while True:
 			
 		print("calling ", build_command(client_info[0], 
 								OBEX_CHAN, 
-								os.path.join(DST_FOLDER, zipFile, ".zip")))
+								os.path.join(DST_FOLDER, zipFile + ".zip")))
 		res = subprocess.call(build_command(client_info[0], 
 								OBEX_CHAN, 
-								os.path.join(DST_FOLDER, zipFile, ".zip")).split(" "))
+								os.path.join(DST_FOLDER, zipFile + ".zip")).split(" "))
 		print("Sent archive with return code %s" % res)
 
 		# Clean tmp folder
-		os.remove(os.path.join(DST_FOLDER, zipFile, ".zip"))
+		os.remove(os.path.join(DST_FOLDER, zipFile + ".zip"))
 
 		# End connexion
 		data = 'Sent:'
