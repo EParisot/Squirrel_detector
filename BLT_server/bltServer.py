@@ -56,8 +56,7 @@ while True:
 		if len(data) == 0:
 			continue
 		print("received [%s]" % data)
-		print(data)
-		if data == "send":
+		if data.decode() == "send":
 			# Zip folder
 			with patch("os.path.isfile", side_effect=accept):
 				zipFile = shutil.make_archive(os.path.join(DST_FOLDER, "SQRT_" + time.strftime("%Y%m%d_%H%M%S")), 'zip', SRC_FOLDER)
@@ -76,8 +75,8 @@ while True:
 			else:
 				data = "Error sending archive. exit"
 			client_sock.send(data)
-			
-		elif "name" in data:
+
+		elif "name" in data.decode():
 			print("change name to ")
 			pass
 
