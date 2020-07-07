@@ -95,5 +95,6 @@ while True:
 	except KeyboardInterrupt:
 		client_sock.close()
 		server_sock.close()
+		subprocess.call(("hciconfig", "hci0", "noscan"))
 		print("disconnected")
 		break
