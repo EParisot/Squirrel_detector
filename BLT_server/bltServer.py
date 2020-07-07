@@ -77,8 +77,7 @@ while True:
 			client_sock.send(data)
 
 		elif "name" in data.decode():
-			print("change name to ")
-			pass
+			print("change name to ", data.decode().split("name ")[-1])
 
 	except IOError:
 		pass
