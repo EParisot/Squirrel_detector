@@ -57,7 +57,7 @@ while True:
 		else:
 			data = "Error sending archive. exit"
 		client_sock.send(data)
-		print("sending [%s]" % data)
+		print(data)
 
 	except IOError:
 		pass
