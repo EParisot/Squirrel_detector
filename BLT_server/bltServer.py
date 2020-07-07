@@ -7,6 +7,7 @@ from bluetooth import *
 
 SRC_FOLDER = "../out"
 DST_FOLDER = "tmp"
+BLT_NAME_FILE = "/etc/machine-info"
 
 server_sock=BluetoothSocket( RFCOMM )
 server_sock.bind(("",PORT_ANY))
@@ -71,13 +72,20 @@ while True:
 			os.remove(os.path.join(DST_FOLDER, zipFile))
 			# End connexion
 			if res == 255:
-				data = 'Sent: ' + os.path.basename(zipFile) + " done. exit"
+				data = 'Sent: ' + os.path.basename(zipFile) + " done."
 			else:
-				data = "Error sending archive. exit"
+				data = "Error sending archive."
 			client_sock.send(data)
 
 		elif "name" in data.decode():
-			print("change name to ", data.decode().split("name ")[-1])
+			new_name = data.decode().split("name ")[-1]
+			print("change name to ", new_name)
+			# edit BLT_NAME_FILE
+			with open(BLT_NAME_FILE, "w") as f:
+				f.write("PRETTY_HOSTNAME=" + new_name)
+			subprocess.call("service", "bluetooth", "restart")
+			data = "Name change requested."
+			client_sock.send(data)
 
 	except IOError:
 		pass
