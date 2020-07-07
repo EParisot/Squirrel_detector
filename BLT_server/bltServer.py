@@ -1,4 +1,5 @@
 import os
+import shutil
 import subprocess
 from bluetooth import *
 
@@ -34,14 +35,15 @@ while True:
 			continue
 		print("received [%s]" % data)
 		
-		for f in os.listdir(SRC_FOLDER):
-			print("calling ", build_command(client_info[0], 
-									OBEX_CHAN, 
-									os.path.join(SRC_FOLDER, f)))
-			res = subprocess.call(build_command(client_info[0], 
-									OBEX_CHAN, 
-									os.path.join(SRC_FOLDER, f)).split(" "))
-			print("Sent file %s with return code %s" % (f, res))
+		shutil.make_archive("tmp/SQRT", 'zip', SRC_FOLDER)
+			
+		print("calling ", build_command(client_info[0], 
+								OBEX_CHAN, 
+								"tmp/SQRT.zip"))
+		res = subprocess.call(build_command(client_info[0], 
+								OBEX_CHAN, 
+								"tmp/SQRT.zip").split(" "))
+		print("Sent file %s with return code %s" % (f, res))
 
 		# End connexion
 		data = 'GoodBye!'
