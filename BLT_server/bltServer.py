@@ -83,7 +83,7 @@ while True:
 			# edit BLT_NAME_FILE
 			with open(BLT_NAME_FILE, "w") as f:
 				f.write("PRETTY_HOSTNAME=" + new_name)
-			subprocess.call("service", "bluetooth", "restart")
+			subprocess.call(("service", "bluetooth", "restart"))
 			data = "Name change requested."
 			client_sock.send(data)
 
