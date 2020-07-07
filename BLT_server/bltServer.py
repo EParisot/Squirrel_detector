@@ -6,7 +6,6 @@ from bluetooth import *
 
 SRC_FOLDER = "../out"
 DST_FOLDER = "tmp"
-OBEX_CHAN = 12
 
 server_sock=BluetoothSocket( RFCOMM )
 server_sock.bind(("",PORT_ANY))
@@ -33,7 +32,14 @@ while True:
 
 	# scan for OBEX service
 	services = find_service(name=None, uuid=None, address=client_info[0])
-	print(services)
+	OBEX_CHAN = None
+	for service in services:
+		if service["name"] == "OBEX Object Push":
+			OBEX_CHAN = service["port"]
+	if OBEX_CHAN == None:
+		data = "Error OBEX service not found. exit"
+		client_sock.send(data)
+		continue
 
 	try:
 		data = client_sock.recv(1024)
@@ -61,7 +67,6 @@ while True:
 		else:
 			data = "Error sending archive. exit"
 		client_sock.send(data)
-		print(data)
 
 	except IOError:
 		pass
