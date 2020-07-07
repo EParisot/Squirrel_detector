@@ -84,6 +84,7 @@ while True:
 			with open(BLT_NAME_FILE, "w") as f:
 				f.write("PRETTY_HOSTNAME=" + new_name)
 			subprocess.call(("service", "bluetooth", "restart"))
+			time.sleep(2)
 			subprocess.call(("hciconfig", "hci0", "piscan"))
 			data = "Name change requested."
 			client_sock.send(data)
