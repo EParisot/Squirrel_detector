@@ -1,0 +1,3 @@
+[submodule "SQRT_app"]
+	path = SQRT_app
+	url = https://github.com/EParisot/SQRT_app.git
