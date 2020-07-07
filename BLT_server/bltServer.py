@@ -35,66 +35,67 @@ def accept(path):
         return False
     return _os_path_isfile(path)
 
-while True:
-	print("Waiting for connection on RFCOMM channel %d" % port)
+try:
+	while True:
+		print("Waiting for connection on RFCOMM channel %d" % port)
 
-	client_sock, client_info = server_sock.accept()
-	print("Accepted connection from ", client_info)
+		client_sock, client_info = server_sock.accept()
+		print("Accepted connection from ", client_info)
 
-	# scan for OBEX service
-	services = find_service(name=None, uuid=None, address=client_info[0])
-	OBEX_CHAN = None
-	for service in services:
-		if service["name"] == "OBEX Object Push":
-			OBEX_CHAN = service["port"]
-	if OBEX_CHAN == None:
-		data = "Error OBEX service not found. exit"
-		client_sock.send(data)
-		continue
-
-	try:
-		data = client_sock.recv(1024)
-		if len(data) == 0:
+		# scan for OBEX service
+		services = find_service(name=None, uuid=None, address=client_info[0])
+		OBEX_CHAN = None
+		for service in services:
+			if service["name"] == "OBEX Object Push":
+				OBEX_CHAN = service["port"]
+		if OBEX_CHAN == None:
+			data = "Error OBEX service not found. exit"
+			client_sock.send(data)
 			continue
-		print("received [%s]" % data)
-		if data.decode() == "send":
-			# Zip folder
-			with patch("os.path.isfile", side_effect=accept):
-				zipFile = shutil.make_archive(os.path.join(DST_FOLDER, "SQRT_" + time.strftime("%Y%m%d_%H%M%S")), 'zip', SRC_FOLDER)
-			print("calling ", build_command(client_info[0], 
-									OBEX_CHAN, 
-									os.path.join(DST_FOLDER, zipFile)))
-			res = subprocess.call(build_command(client_info[0], 
-									OBEX_CHAN, 
-									os.path.join(DST_FOLDER, zipFile)).split(" "))
-			print("Sent archive with return code %s" % res)
-			# Clean tmp folder
-			os.remove(os.path.join(DST_FOLDER, zipFile))
-			# End connexion
-			if res == 255:
-				data = 'Sent: ' + os.path.basename(zipFile) + " done."
-			else:
-				data = "Error sending archive."
-			client_sock.send(data)
 
-		elif "name" in data.decode():
-			new_name = data.decode().split("name ")[-1]
-			print("change name to ", new_name)
-			# edit BLT_NAME_FILE
-			with open(BLT_NAME_FILE, "w") as f:
-				f.write("PRETTY_HOSTNAME=" + new_name)
-			subprocess.call(("service", "bluetooth", "restart"))
-			time.sleep(2)
-			subprocess.call(("hciconfig", "hci0", "piscan"))
-			data = "Name change requested."
-			client_sock.send(data)
+		try:
+			data = client_sock.recv(1024)
+			if len(data) == 0:
+				continue
+			print("received [%s]" % data)
+			if data.decode() == "send":
+				# Zip folder
+				with patch("os.path.isfile", side_effect=accept):
+					zipFile = shutil.make_archive(os.path.join(DST_FOLDER, "SQRT_" + time.strftime("%Y%m%d_%H%M%S")), 'zip', SRC_FOLDER)
+				print("calling ", build_command(client_info[0], 
+										OBEX_CHAN, 
+										os.path.join(DST_FOLDER, zipFile)))
+				res = subprocess.call(build_command(client_info[0], 
+										OBEX_CHAN, 
+										os.path.join(DST_FOLDER, zipFile)).split(" "))
+				print("Sent archive with return code %s" % res)
+				# Clean tmp folder
+				os.remove(os.path.join(DST_FOLDER, zipFile))
+				# End connexion
+				if res == 255:
+					data = 'Sent: ' + os.path.basename(zipFile) + " done."
+				else:
+					data = "Error sending archive."
+				client_sock.send(data)
 
-	except IOError:
-		pass
+			elif "name" in data.decode():
+				new_name = data.decode().split("name ")[-1]
+				print("change name to ", new_name)
+				# edit BLT_NAME_FILE
+				with open(BLT_NAME_FILE, "w") as f:
+					f.write("PRETTY_HOSTNAME=" + new_name)
+				subprocess.call(("service", "bluetooth", "restart"))
+				time.sleep(2)
+				subprocess.call(("hciconfig", "hci0", "piscan"))
+				data = "Name change requested."
+				client_sock.send(data)
 
-	except KeyboardInterrupt:
-		client_sock.close()
-		server_sock.close()
-		subprocess.call(("hciconfig", "hci0", "noscan"))
-		print("disconnected")
-		break
+		except IOError:
+			pass
+
+except KeyboardInterrupt:
+	client_sock.close()
+	server_sock.close()
+	subprocess.call(("hciconfig", "hci0", "noscan"))
+	print("disconnected")
+	break
