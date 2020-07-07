@@ -93,9 +93,10 @@ try:
 		except IOError:
 			pass
 
+		except KeyboardInterrupt:
+			client_sock.close()
+			server_sock.close()
+
 except KeyboardInterrupt:
-	client_sock.close()
-	server_sock.close()
 	subprocess.call(("hciconfig", "hci0", "noscan"))
-	print("disconnected")
-	break
+	print("Stop server")
