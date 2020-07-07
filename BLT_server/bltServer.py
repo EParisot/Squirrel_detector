@@ -4,6 +4,7 @@ import subprocess
 from bluetooth import *
 
 SRC_FOLDER = "../out"
+DST_FOLDER = "tmp"
 OBEX_CHAN = 12
 
 server_sock=BluetoothSocket( RFCOMM )
@@ -36,19 +37,21 @@ while True:
 		print("received [%s]" % data)
 		
 		# Zip folder
-		shutil.make_archive("tmp/SQRT", 'zip', SRC_FOLDER)
+		zipFile = shutil.make_archive(os.path.join(DST_FOLDER, "SQRT"), 'zip', SRC_FOLDER)
 			
 		print("calling ", build_command(client_info[0], 
 								OBEX_CHAN, 
-								"tmp/SQRT.zip"))
+								os.path.join(DST_FOLDER, zipFile, ".zip")))
 		res = subprocess.call(build_command(client_info[0], 
 								OBEX_CHAN, 
-								"tmp/SQRT.zip").split(" "))
+								os.path.join(DST_FOLDER, zipFile, ".zip")).split(" "))
 		print("Sent archive with return code %s" % res)
 
-		# End connexion
-		data = 'GoodBye!'
+		# Clean tmp folder
+		os.remove(os.path.join(DST_FOLDER, zipFile, ".zip"))
 
+		# End connexion
+		data = 'Sent:'
 		client_sock.send(data)
 		print("sending [%s]" % data)
 
