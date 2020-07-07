@@ -31,6 +31,10 @@ while True:
 	client_sock, client_info = server_sock.accept()
 	print("Accepted connection from ", client_info)
 
+	# scan for OBEX service
+	services = find_service(name=None, uuid=None, address=client_info[0])
+	print(services)
+
 	try:
 		data = client_sock.recv(1024)
 		if len(data) == 0:
