@@ -22,6 +22,7 @@ def clean_all():
 	GPIO.cleanup()
 
 def wifi_switch():
+	global WIFI
 	if WIFI:
 		cmd = 'ifconfig wlan0 down'
 		#os.system(cmd)
@@ -38,7 +39,7 @@ def wifi_switch():
 			GPIO.output(LED, GPIO.LOW)
 
 def button_callback(channel):
-	print("Button pushed ! Switching wifi state to ", WIFI)
+	print("Button pushed ! Switching wifi state...")
 	wifi_switch()
 	
 if __name__ == "__main__":
