@@ -1,6 +1,6 @@
 #! /usr/bin/python3
 # coding: utf8
-
+import os
 import time
 from picamera import PiCamera
 import adafruit_vl53l0x
@@ -27,7 +27,7 @@ if DEBUG:
 
 SRC_FOLDER = "/home/pi/Squirrel_Detector/out/"
 IMG_EXT = ".png"
-
+WIFI = True
 threshold = 45
 
 def init_sensor():
@@ -51,19 +51,26 @@ def clean_all():
 	GPIO.output(BTNVCC, GPIO.LOW)
 	GPIO.cleanup()
 
-def blink_led():
-	while True:
-		time.sleep(0.5)
-		GPIO.output(LED, GPIO.HIGH)
-		time.sleep(0.5)
+def wifi_switch():
+	if WIFI:
+		cmd = 'ifconfig wlan0 down'
+		os.system(cmd)
+		WIFI = False
 		GPIO.output(LED, GPIO.LOW)
+	else:
+		cmd = 'ifconfig wlan0 up'
+		os.system(cmd)
+		WIFI = True
+		while True:
+			time.sleep(0.5)
+			GPIO.output(LED, GPIO.HIGH)
+			time.sleep(0.5)
+			GPIO.output(LED, GPIO.LOW)
 
 def button_callback(channel):
 	if DEBUG:
-		logger.info("Button was pushed!")
-	# TODO
-	GPIO.output(LED, GPIO.LOW)
-
+		logger.info("Button was pushed ! Switching wifi %s" % not WIFI)
+	wifi_switch()
 	
 def take_snap():
 	with PiCamera(resolution=(1920, 1080)) as camera:
@@ -82,6 +89,7 @@ def test_snap():
 		exit()
 
 if __name__ == "__main__":
+	wifi_switch()
 	sensor = init_sensor()
 	init_GPIO()
 	GPIO.add_event_detect(BTN, GPIO.RISING, callback=button_callback)
