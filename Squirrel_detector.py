@@ -34,7 +34,6 @@ i2c = busio.I2C(board.SCL, board.SDA)
 sensor = adafruit_vl53l0x.VL53L0X(i2c)
 sensor.measurement_timing_budget = 200000
 
-GPIO.setmode(GPIO.BOARD)
 BTN = 13
 LED = 5
 GPIO.setup(BTN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
