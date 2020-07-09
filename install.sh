@@ -6,4 +6,6 @@ python3 -c 'import sys; print("Please update your Python version to 3.5 or later
 # package dep
 pip3 install -r requirements.txt
 # bluetooth files setting
-python3 set_blt.py
+cp config_files/main.conf /etc/bluetooth/main.conf
+cp config_files/dbus-org.bluez.service /etc/systemd/system/dbus-org.bluez.service
+cp config_files/machine-info /etc/machine-info
