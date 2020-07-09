@@ -10,7 +10,7 @@ BTN = 12
 BTNVCC = 13
 LED = 5
 def init_GPIO():
-	GPIO.setmode(GPIO.BOARD)
+	GPIO.setmode(GPIO.BCM)
 	GPIO.setup(BTN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 	GPIO.setup(BTNVCC, GPIO.OUT)
 	GPIO.output(BTNVCC, GPIO.HIGH)
