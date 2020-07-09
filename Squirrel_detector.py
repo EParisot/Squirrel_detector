@@ -3,11 +3,10 @@
 
 import time
 from picamera import PiCamera
+import adafruit_vl53l0x
 import board
 import busio
-import adafruit_vl53l0x
 import RPi.GPIO as GPIO
-import threading
 
 DEBUG = True
 
