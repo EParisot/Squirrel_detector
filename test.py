@@ -22,8 +22,7 @@ def clean_all():
 	GPIO.output(BTNVCC, GPIO.LOW)
 	GPIO.cleanup()
 
-def wifi_switch():
-	global WIFI
+def wifi_switch(WIFI):
 	if WIFI:
 		cmd = 'ifconfig wlan0 down'
 		os.system(cmd)
@@ -34,12 +33,13 @@ def wifi_switch():
 def button_callback(channel):
 	print("Button pushed ! Switching wifi state...")
 	global WIFI
-	wifi_switch()
+	wifi_switch(WIFI)
 	WIFI = not WIFI
 	
 if __name__ == "__main__":
 	init_GPIO()
-	wifi_switch()
+	wifi_switch(WIFI)
+	WIFI = False
 	GPIO.add_event_detect(BTN, GPIO.RISING, callback=button_callback)
 	try:
 		while True:
