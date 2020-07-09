@@ -5,8 +5,8 @@ import time
 import subprocess
 from bluetooth import *
 
-SRC_FOLDER = "../out"
-DST_FOLDER = "tmp"
+SRC_FOLDER = "/home/pi/Squirrel_Detector/out"
+DST_FOLDER = "/home/pi/Squirren_Detector/BLT_server/tmp"
 BLT_NAME_FILE = "/etc/machine-info"
 
 DEBUG = True

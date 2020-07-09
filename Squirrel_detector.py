@@ -28,7 +28,7 @@ if DEBUG:
 	stream_handler.setLevel(logging.DEBUG)
 	logger.addHandler(stream_handler)
 
-SRC_FOLDER = "out/"
+SRC_FOLDER = "/home/pi/Squirrel_Detector/out/"
 IMG_EXT = ".png"
 
 threshold = 45
