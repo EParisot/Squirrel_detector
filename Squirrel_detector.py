@@ -17,7 +17,7 @@ if DEBUG:
 	import logging
 	from logging.handlers import RotatingFileHandler
 
-	logger = logging.getLogger()
+	logger = logging.getLogger("main_logger")
 	logger.setLevel(logging.DEBUG)
 	formatter = logging.Formatter('%(asctime)s :: %(levelname)s :: %(message)s')
 	file_handler = RotatingFileHandler('activity.log', 'a', 1000000, 1)

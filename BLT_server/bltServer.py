@@ -15,7 +15,7 @@ if DEBUG:
 	import logging
 	from logging.handlers import RotatingFileHandler
 
-	logger = logging.getLogger()
+	logger = logging.getLogger("blt_logger")
 	logger.setLevel(logging.DEBUG)
 	formatter = logging.Formatter('%(asctime)s :: %(levelname)s :: %(message)s')
 	file_handler = RotatingFileHandler('blt_activity.log', 'a', 1000000, 1)
