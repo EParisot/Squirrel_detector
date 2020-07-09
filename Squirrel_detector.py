@@ -55,19 +55,22 @@ def clean_all():
 	GPIO.output(BTNVCC, GPIO.LOW)
 	GPIO.cleanup()
 
+running_blt = False
 def button_callback(channel):
 	if DEBUG:
 		logger.info("Button was pushed!")
 	blt_t = threading.Thread(target=run_server)
 	blt_t.start()
+	running_blt = True
 	if DEBUG:
-		logger.info("Waiting for threads ton complete")
+		logger.info("Waiting for threads to complete...")
 	while blt_t.is_alive():
 		time.sleep(0.5)
 		GPIO.output(LED, GPIO.HIGH)
 		time.sleep(0.5)
 		GPIO.output(LED, GPIO.LOW)
 	GPIO.output(LED, GPIO.LOW)
+	running_blt = False
 	
 def take_snap():
 	with PiCamera(resolution=(1920, 1080)) as camera:
@@ -92,6 +95,8 @@ if __name__ == "__main__":
 	try:
 		test_snap()
 		while True:
+			while running_blt:
+				time.sleep(1)
 			time.sleep(1)
 			distance = sensor.range // 10
 			if DEBUG:
