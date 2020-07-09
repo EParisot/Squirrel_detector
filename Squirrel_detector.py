@@ -7,6 +7,9 @@ import board
 import busio
 import adafruit_vl53l0x
 import RPi.GPIO as GPIO
+import threading
+
+from BLT_server.bltServer import run_server
 
 DEBUG = True
 
@@ -30,30 +33,40 @@ IMG_EXT = ".png"
 
 threshold = 45
 
-i2c = busio.I2C(board.SCL, board.SDA)
-sensor = adafruit_vl53l0x.VL53L0X(i2c)
-sensor.measurement_timing_budget = 200000
+def init_sensor():
+	i2c = busio.I2C(board.SCL, board.SDA)
+	sensor = adafruit_vl53l0x.VL53L0X(i2c)
+	sensor.measurement_timing_budget = 200000
 
 BTN = 12
 BTNVCC = 13
 LED = 5
-GPIO.setup(BTN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.setup(BTNVCC, GPIO.OUT)
-GPIO.output(BTNVCC, GPIO.HIGH)
-GPIO.setup(LED, GPIO.OUT)
-GPIO.output(LED, GPIO.LOW)
+def init_GPIO():
+	GPIO.setup(BTN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+	GPIO.setup(BTNVCC, GPIO.OUT)
+	GPIO.output(BTNVCC, GPIO.HIGH)
+	GPIO.setup(LED, GPIO.OUT)
+	GPIO.output(LED, GPIO.LOW)
+
+
+def clean_all():
+	GPIO.output(LED, GPIO.LOW)
+	GPIO.output(BTNVCC, GPIO.LOW)
+	GPIO.cleanup()
 
 def button_callback(channel):
-	logger.info("Button was pushed!")
-	# call threaded server
-	#while True:
-	time.sleep(0.5)
-	GPIO.output(LED, GPIO.LOW)
-	time.sleep(0.5)
-	GPIO.output(LED, GPIO.HIGH)
-
-GPIO.add_event_detect(BTN, GPIO.RISING, callback=button_callback)
-
+	if DEBUG:
+		logger.info("Button was pushed!")
+	blt_t = threading.Thread(target=run_server)
+	blt_t.start()
+	if DEBUG:
+		logger.info("Waiting for threads ton complete")
+	while blt_t.is_alive():
+		time.sleep(0.5)
+		GPIO.output(LED, GPIO.HIGH)
+		time.sleep(0.5)
+		GPIO.output(LED, GPIO.LOW)
+	
 def take_snap():
 	with PiCamera(resolution=(1920, 1080)) as camera:
 		filename = SRC_FOLDER + str(time.time()) + IMG_EXT
@@ -67,10 +80,13 @@ def test_snap():
 	except Exception as e:
 		if DEBUG:
 			logger.debug(str(e))
-		GPIO.cleanup()
+		clean_all()
 		exit()
 
 if __name__ == "__main__":
+	init_sensor()
+	init_GPIO()
+	GPIO.add_event_detect(BTN, GPIO.RISING, callback=button_callback)
 	try:
 		test_snap()
 		while True:
@@ -83,4 +99,4 @@ if __name__ == "__main__":
 	except Exception as e:
 		if DEBUG:
 			logger.debug(str(e))
-	GPIO.cleanup()
+	clean_all()
