@@ -65,7 +65,7 @@ def run_server():
 
 			client_sock, client_info = server_sock.accept()
 			if DEBUG:
-				logger.info("Accepted connection from %s" % client_info)
+				logger.info("Accepted connection from %s" % client_info[0])
 
 			# scan for OBEX service
 			services = find_service(name=None, uuid=None, address=client_info[0])
