@@ -27,15 +27,9 @@ def wifi_switch():
 	if WIFI:
 		cmd = 'ifconfig wlan0 down'
 		#os.system(cmd)
-		GPIO.output(LED, GPIO.LOW)
 	else:
 		cmd = 'ifconfig wlan0 up'
 		#os.system(cmd)
-		while True:
-			time.sleep(0.5)
-			GPIO.output(LED, GPIO.HIGH)
-			time.sleep(0.5)
-			GPIO.output(LED, GPIO.LOW)
 
 def button_callback(channel):
 	print("Button pushed ! Switching wifi state...")
@@ -43,13 +37,19 @@ def button_callback(channel):
 	wifi_switch()
 	WIFI = not WIFI
 	
-	
 if __name__ == "__main__":
 	init_GPIO()
 	wifi_switch()
 	GPIO.add_event_detect(BTN, GPIO.RISING, callback=button_callback)
 	try:
 		while True:
+			if WIFI:
+				time.sleep(0.5)
+				GPIO.output(LED, GPIO.HIGH)
+				time.sleep(0.5)
+				GPIO.output(LED, GPIO.LOW)
+			else:
+				GPIO.output(LED, GPIO.LOW)
 			time.sleep(1)
 	except KeyboardInterrupt:
 		pass    
