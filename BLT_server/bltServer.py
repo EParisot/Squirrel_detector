@@ -26,21 +26,23 @@ if DEBUG:
 	stream_handler.setLevel(logging.DEBUG)
 	logger.addHandler(stream_handler)
 
-subprocess.call(("hciconfig", "hci0", "piscan"))
-time.sleep(1)
-server_sock=BluetoothSocket( RFCOMM )
-server_sock.bind(("",PORT_ANY))
-server_sock.listen(1)
+def init_blt():
+	subprocess.call(("hciconfig", "hci0", "piscan"))
+	time.sleep(1)
+	server_sock=BluetoothSocket( RFCOMM )
+	server_sock.bind(("",PORT_ANY))
+	server_sock.listen(1)
 
-port = server_sock.getsockname()[1]
+	port = server_sock.getsockname()[1]
 
-uuid = "94f39d29-7d6d-437d-973b-fba39e49d4ee"
-advertise_service( server_sock, "SQRT",
-					service_id = uuid,
-					service_classes = [ uuid, SERIAL_PORT_CLASS ],
-					profiles = [ SERIAL_PORT_PROFILE ], 
-					protocols = [ OBEX_UUID ] 
-)
+	uuid = "94f39d29-7d6d-437d-973b-fba39e49d4ee"
+	advertise_service( server_sock, "SQRT",
+						service_id = uuid,
+						service_classes = [ uuid, SERIAL_PORT_CLASS ],
+						profiles = [ SERIAL_PORT_PROFILE ], 
+						protocols = [ OBEX_UUID ] )
+	return port, server_sock
+
 
 def build_command(addr, chan, src):
 	return "obexftp --nopath --noconn --uuid none --bluetooth %s --channel %s -p %s" % (addr, chan, src)
@@ -55,6 +57,7 @@ def accept(path):
     return _os_path_isfile(path)
 
 def run_server():
+	port, server_sock = init_blt()
 	try:
 		while True:
 			if DEBUG:
