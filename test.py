@@ -44,13 +44,13 @@ if __name__ == "__main__":
 	try:
 		while True:
 			if WIFI:
-				time.sleep(0.5)
+				time.sleep(0.25)
 				GPIO.output(LED, GPIO.HIGH)
-				time.sleep(0.5)
+				time.sleep(0.25)
 				GPIO.output(LED, GPIO.LOW)
 			else:
 				GPIO.output(LED, GPIO.LOW)
-			time.sleep(1)
+				time.sleep(1)
 	except KeyboardInterrupt:
 		pass    
 	clean_all()
