@@ -93,9 +93,9 @@ if __name__ == "__main__":
 		test_snap()
 		while True:
 			if WIFI:
-				time.sleep(0.25)
+				time.sleep(0.5)
 				GPIO.output(LED, GPIO.HIGH)
-				time.sleep(0.25)
+				time.sleep(0.5)
 				GPIO.output(LED, GPIO.LOW)
 			else:
 				GPIO.output(LED, GPIO.LOW)
