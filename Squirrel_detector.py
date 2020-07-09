@@ -89,8 +89,6 @@ if __name__ == "__main__":
 	try:
 		test_snap()
 		while True:
-			while running_blt:
-				time.sleep(1)
 			time.sleep(1)
 			distance = sensor.range // 10
 			if DEBUG:
