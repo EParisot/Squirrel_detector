@@ -106,7 +106,6 @@ def run_server():
 					else:
 						data = "Error sending archive."
 					client_sock.send(data)
-					raise KeyboardInterrupt
 
 				# Handle name change request
 				elif "name" in data.decode():
@@ -121,7 +120,6 @@ def run_server():
 					subprocess.call(("hciconfig", "hci0", "piscan"))
 					data = "Name change requested."
 					client_sock.send(data)
-					raise KeyboardInterrupt
 
 			except IOError:
 				pass

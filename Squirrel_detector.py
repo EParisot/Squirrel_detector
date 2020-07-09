@@ -67,6 +67,7 @@ def button_callback(channel):
 		GPIO.output(LED, GPIO.HIGH)
 		time.sleep(0.5)
 		GPIO.output(LED, GPIO.LOW)
+	GPIO.output(LED, GPIO.LOW)
 	
 def take_snap():
 	with PiCamera(resolution=(1920, 1080)) as camera:
