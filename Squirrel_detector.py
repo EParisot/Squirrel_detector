@@ -58,6 +58,7 @@ def wifi_switch(WIFI):
 	else:
 		cmd = 'ifconfig wlan0 up'
 		os.system(cmd)
+	time.sleep(1)
 
 def button_callback(channel):
 	global WIFI
