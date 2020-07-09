@@ -27,12 +27,10 @@ def wifi_switch():
 	if WIFI:
 		cmd = 'ifconfig wlan0 down'
 		#os.system(cmd)
-		WIFI = False
 		GPIO.output(LED, GPIO.LOW)
 	else:
 		cmd = 'ifconfig wlan0 up'
 		#os.system(cmd)
-		WIFI = True
 		while True:
 			time.sleep(0.5)
 			GPIO.output(LED, GPIO.HIGH)
@@ -41,7 +39,10 @@ def wifi_switch():
 
 def button_callback(channel):
 	print("Button pushed ! Switching wifi state...")
+	global WIFI
 	wifi_switch()
+	WIFI = not WIFI
+	
 	
 if __name__ == "__main__":
 	init_GPIO()
