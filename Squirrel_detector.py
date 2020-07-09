@@ -3,12 +3,7 @@ from picamera import PiCamera
 import board
 import busio
 import adafruit_vl53l0x
-i2c = busio.I2C(board.SCL, board.SDA)
-sensor = adafruit_vl53l0x.VL53L0X(i2c)
-sensor.measurement_timing_budget = 200000
-
-SRC_FOLDER = "out/"
-IMG_EXT = ".png"
+import RPi.GPIO as GPIO
 
 DEBUG = True
 
@@ -27,7 +22,32 @@ if DEBUG:
 	stream_handler.setLevel(logging.DEBUG)
 	logger.addHandler(stream_handler)
 
+SRC_FOLDER = "out/"
+IMG_EXT = ".png"
+
 threshold = 45
+
+i2c = busio.I2C(board.SCL, board.SDA)
+sensor = adafruit_vl53l0x.VL53L0X(i2c)
+sensor.measurement_timing_budget = 200000
+
+GPIO.setmode(GPIO.BOARD)
+BTN = 13
+LED = 5
+GPIO.setup(BTN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(LED, GPIO.OUT, pull_up_down=GPIO.PUD_DOWN)
+GPIO.output(LED, GPIO.LOW)
+
+def button_callback(channel):
+	logger.info("Button was pushed!")
+	# call threaded server
+	while True:
+		time.sleep(0.5)
+		GPIO.output(LED, GPIO.LOW)
+		time.sleep(0.5)
+		GPIO.output(LED, GPIO.HIGH)
+
+GPIO.add_event_detect(13, GPIO.RISING, callback=button_callback)
 
 def take_snap():
 	with PiCamera(resolution=(1920, 1080)) as camera:
@@ -42,6 +62,7 @@ def test_snap():
 	except Exception as e:
 		if DEBUG:
 			logger.debug(str(e))
+		GPIO.cleanup()
 		exit()
 
 if __name__ == "__main__":
@@ -57,3 +78,4 @@ if __name__ == "__main__":
 	except Exception as e:
 		if DEBUG:
 			logger.debug(str(e))
+	GPIO.cleanup()

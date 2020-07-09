@@ -9,6 +9,7 @@ pip3 install -r requirements.txt
 cp config_files/main.conf /etc/bluetooth/main.conf
 cp config_files/dbus-org.bluez.service /etc/systemd/system/dbus-org.bluez.service
 cp config_files/machine-info /etc/machine-info
+# all Done !
 echo "Installation Done !"
 read -p "Reboot Now? (y/n)" -n 1 -r
 echo    # (optional) move to a new line
