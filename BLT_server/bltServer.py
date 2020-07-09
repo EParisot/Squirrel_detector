@@ -125,8 +125,9 @@ def run_server():
 					if DEBUG:
 						logger.info("Unknown command %s" % data.decode())
 
-			except IOError:
-				pass
+			except Exception as e:
+				if DEBUG:
+					logger.info("Error %s" % e)
 
 			except KeyboardInterrupt:
 				client_sock.close()
