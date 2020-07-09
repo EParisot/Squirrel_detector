@@ -37,7 +37,7 @@ sensor.measurement_timing_budget = 200000
 BTN = 13
 LED = 5
 GPIO.setup(BTN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.setup(LED, GPIO.OUT, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(LED, GPIO.OUT)
 GPIO.output(LED, GPIO.LOW)
 
 def button_callback(channel):
