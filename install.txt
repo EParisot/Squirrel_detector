@@ -1,3 +1,0 @@
-IN /etc/systemd/system/dbus-org.bluez.service EDIT "ExecStart=/usr/lib/bluetooth/bluetoothd -C" (added '-C') AND ADD "ExecStartPost=/usr/bin/sdptool add SP" AFTER
-IN /etc/bluetooth/main.conf ADD DisablePlugins after '[GENERAL]' = "pnat UNDER GENERAL"
-ADD /etc/machine-info FILE with content PRETTY_HOSTNAME=SQRT

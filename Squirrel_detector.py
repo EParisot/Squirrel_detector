@@ -9,8 +9,6 @@ import adafruit_vl53l0x
 import RPi.GPIO as GPIO
 import threading
 
-from BLT_server.bltServer import run_server
-
 DEBUG = True
 
 if DEBUG:
@@ -49,28 +47,24 @@ def init_GPIO():
 	GPIO.setup(LED, GPIO.OUT)
 	GPIO.output(LED, GPIO.LOW)
 
-
 def clean_all():
 	GPIO.output(LED, GPIO.LOW)
 	GPIO.output(BTNVCC, GPIO.LOW)
 	GPIO.cleanup()
 
-running_blt = False
-def button_callback(channel):
-	if DEBUG:
-		logger.info("Button was pushed!")
-	blt_t = threading.Thread(target=run_server)
-	blt_t.start()
-	running_blt = True
-	if DEBUG:
-		logger.info("Waiting for threads to complete...")
-	while blt_t.is_alive():
+def blink_led():
+	while True:
 		time.sleep(0.5)
 		GPIO.output(LED, GPIO.HIGH)
 		time.sleep(0.5)
 		GPIO.output(LED, GPIO.LOW)
+
+def button_callback(channel):
+	if DEBUG:
+		logger.info("Button was pushed!")
+	# TODO
 	GPIO.output(LED, GPIO.LOW)
-	running_blt = False
+
 	
 def take_snap():
 	with PiCamera(resolution=(1920, 1080)) as camera:

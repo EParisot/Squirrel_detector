@@ -56,7 +56,7 @@ def accept(path):
         return False
     return _os_path_isfile(path)
 
-def run_server():
+if __name__ == "__main__":
 	port, server_sock = init_blt()
 	try:
 		while True:
