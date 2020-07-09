@@ -52,7 +52,7 @@ def accept(path):
         return False
     return _os_path_isfile(path)
 
-def run_server()
+def run_server():
 	try:
 		while True:
 			if DEBUG:
@@ -102,7 +102,7 @@ def run_server()
 						data = "Error sending archive."
 					client_sock.send(data)
 					raise KeyboardInterrupt
-				
+
 				# Handle name change request
 				elif "name" in data.decode():
 					new_name = data.decode().split("name ")[-1]
