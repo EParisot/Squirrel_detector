@@ -20,7 +20,7 @@ conf_files = {"bluez_conf_file" : "/etc/systemd/system/dbus-org.bluez.service",
 				"blt_name_file" : "/etc/machine-info"}
 
 def edit_blt_conf(f_name, f_path):
-	with open(f_path, "rw") as f:
+	with open(f_path, "w") as f:
 		f_content = f.read()
 		f_content_split = f_content.split("[General]\n")
 		if len(f_content_split) == 2:
@@ -33,7 +33,7 @@ def edit_blt_conf(f_name, f_path):
 				logger.info("%s config Done." % f_name)
 
 def edit_bluez_conf(f_name, f_path):
-	with open(f_path, "rw") as f:
+	with open(f_path, "w") as f:
 		f_content = f.read()
 		f_content_split = f_content.split("ExecStart=/usr/lib/bluetooth/bluetoothd")
 		if len(f_content_split) == 2:
