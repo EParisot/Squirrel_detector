@@ -51,26 +51,20 @@ def clean_all():
 	GPIO.output(BTNVCC, GPIO.LOW)
 	GPIO.cleanup()
 
-def wifi_switch():
+def wifi_switch(WIFI):
 	if WIFI:
 		cmd = 'ifconfig wlan0 down'
 		os.system(cmd)
-		WIFI = False
-		GPIO.output(LED, GPIO.LOW)
 	else:
 		cmd = 'ifconfig wlan0 up'
 		os.system(cmd)
-		WIFI = True
-		while True:
-			time.sleep(0.5)
-			GPIO.output(LED, GPIO.HIGH)
-			time.sleep(0.5)
-			GPIO.output(LED, GPIO.LOW)
 
 def button_callback(channel):
+	global WIFI
 	if DEBUG:
-		logger.info("Button was pushed ! Switching wifi %s" % not WIFI)
-	wifi_switch()
+		logger.info("Button pushed ! Switching wifi state to %s" % ("OFF" if WIFI else "ON"))
+	wifi_switch(WIFI)
+	WIFI = not WIFI
 	
 def take_snap():
 	with PiCamera(resolution=(1920, 1080)) as camera:
@@ -89,19 +83,27 @@ def test_snap():
 		exit()
 
 if __name__ == "__main__":
-	wifi_switch()
-	sensor = init_sensor()
 	init_GPIO()
+	sensor = init_sensor()
+	wifi_switch(WIFI)
+	WIFI = False
 	GPIO.add_event_detect(BTN, GPIO.RISING, callback=button_callback)
 	try:
 		test_snap()
 		while True:
-			time.sleep(1)
-			distance = sensor.range // 10
-			if DEBUG:
-				logger.debug(distance)
-			if distance > 0 and distance < threshold:
-				take_snap()
+			if WIFI:
+				time.sleep(0.25)
+				GPIO.output(LED, GPIO.HIGH)
+				time.sleep(0.25)
+				GPIO.output(LED, GPIO.LOW)
+			else:
+				GPIO.output(LED, GPIO.LOW)
+				time.sleep(1)
+				distance = sensor.range // 10
+				if DEBUG:
+					logger.debug(distance)
+				if distance > 0 and distance < threshold:
+					take_snap()
 	except Exception as e:
 		if DEBUG:
 			logger.debug(str(e))
