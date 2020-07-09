@@ -32,12 +32,15 @@ def edit_blt_conf(f_name, f_path):
 				f.seek(0)
 				#f.write("[General]\n\n# SQRT AUTO CONFIG:\nDisablePlugins = pnat\n" + f_content_split[1])
 				logger.info("%s config Done." % f_name)
+		else:
+			logger.info("Srange file format, may need manual editing")
 
 def edit_bluez_conf(f_name, f_path):
 	logger.info("started %s config" % f_name)
 	with open(f_path, "r+") as f:
 		f_content = f.read()
 		f_content_split = f_content.split("ExecStart=/usr/lib/bluetooth/bluetoothd")
+		print(len(f_content_split))
 		if len(f_content_split) == 2:
 			if f_content_split[1].startswith(" -C\nExecStartPost=/usr/bin/sdptool add SP\n") or f_content_split[0].endswith("\n# SQRT AUTO CONFIG:\n"):
 				logger.info("%s already configured" % f_name)
@@ -46,6 +49,8 @@ def edit_bluez_conf(f_name, f_path):
 				f.seek(0)
 				#f.write(f_content_split[0] + "\n# SQRT AUTO CONFIG:\nExecStart=/usr/lib/bluetooth/bluetoothd -C\nExecStartPost=/usr/bin/sdptool add SP\n" + f_content_split[1])
 				logger.info("%s config Done." % f_name)
+		else:
+			logger.info("Srange file format, may need manual editing")
 
 if __name__ == "__main__":
 	for f_name, f_path in conf_files.items():
