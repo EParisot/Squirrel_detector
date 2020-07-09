@@ -38,16 +38,15 @@ def wifi_switch():
 			GPIO.output(LED, GPIO.LOW)
 
 def button_callback(channel):
-	if DEBUG:
-	    print("Button pushed ! Switching wifi state to ", WIFI)
+	print("Button pushed ! Switching wifi state to ", WIFI)
 	wifi_switch()
 	
 if __name__ == "__main__":
 	wifi_switch()
 	GPIO.add_event_detect(BTN, GPIO.RISING, callback=button_callback)
-        try:
-            while True:
-                time.sleep(1)
-        except KeyboardInterrupt:
-            pass    
-        clean_all()
+	try:
+		while True:
+			time.sleep(1)
+	except KeyboardInterrupt:
+		pass    
+	clean_all()
