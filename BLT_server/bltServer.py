@@ -9,6 +9,23 @@ SRC_FOLDER = "../out"
 DST_FOLDER = "tmp"
 BLT_NAME_FILE = "/etc/machine-info"
 
+DEBUG = True
+
+if DEBUG:
+	import logging
+	from logging.handlers import RotatingFileHandler
+
+	logger = logging.getLogger()
+	logger.setLevel(logging.DEBUG)
+	formatter = logging.Formatter('%(asctime)s :: %(levelname)s :: %(message)s')
+	file_handler = RotatingFileHandler('blt_activity.log', 'a', 1000000, 1)
+	file_handler.setLevel(logging.DEBUG)
+	file_handler.setFormatter(formatter)
+	logger.addHandler(file_handler)
+	stream_handler = logging.StreamHandler()
+	stream_handler.setLevel(logging.DEBUG)
+	logger.addHandler(stream_handler)
+
 server_sock=BluetoothSocket( RFCOMM )
 server_sock.bind(("",PORT_ANY))
 server_sock.listen(1)
@@ -37,10 +54,12 @@ def accept(path):
 
 try:
 	while True:
-		print("Waiting for connection on RFCOMM channel %d" % port)
+		if DEBUG:
+			logger.info("Waiting for connection on RFCOMM channel %d" % port)
 
 		client_sock, client_info = server_sock.accept()
-		print("Accepted connection from ", client_info)
+		if DEBUG:
+			logger.info("Accepted connection from %s" % client_info)
 
 		# scan for OBEX service
 		services = find_service(name=None, uuid=None, address=client_info[0])
@@ -57,18 +76,22 @@ try:
 			data = client_sock.recv(1024)
 			if len(data) == 0:
 				continue
-			print("received [%s]" % data)
+			if DEBUG:
+				logger.info("received [%s]" % data)
+			# Handle send request
 			if data.decode() == "send":
 				# Zip folder
 				with patch("os.path.isfile", side_effect=accept):
 					zipFile = shutil.make_archive(os.path.join(DST_FOLDER, "SQRT_" + time.strftime("%Y%m%d_%H%M%S")), 'zip', SRC_FOLDER)
-				print("calling ", build_command(client_info[0], 
+				if DEBUG:
+					logger.info("calling %s" % build_command(client_info[0], 
 										OBEX_CHAN, 
 										os.path.join(DST_FOLDER, zipFile)))
 				res = subprocess.call(build_command(client_info[0], 
 										OBEX_CHAN, 
 										os.path.join(DST_FOLDER, zipFile)).split(" "))
-				print("Sent archive with return code %s" % res)
+				if DEBUG:
+					logger.info("Sent archive with return code %s" % res)
 				# Clean tmp folder
 				os.remove(os.path.join(DST_FOLDER, zipFile))
 				# End connexion
@@ -77,10 +100,11 @@ try:
 				else:
 					data = "Error sending archive."
 				client_sock.send(data)
-
+			# Handle name change request
 			elif "name" in data.decode():
 				new_name = data.decode().split("name ")[-1]
-				print("change name to ", new_name)
+				if DEBUG:
+					logger.info("change name to %s" % new_name)
 				# edit BLT_NAME_FILE
 				with open(BLT_NAME_FILE, "w") as f:
 					f.write("PRETTY_HOSTNAME=" + new_name)
@@ -99,4 +123,5 @@ try:
 
 except KeyboardInterrupt:
 	subprocess.call(("hciconfig", "hci0", "noscan"))
-	print("Stop server")
+	if DEBUG:
+		logger.info("Stop server")
