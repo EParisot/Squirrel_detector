@@ -1,0 +1,11 @@
+auto lo
+iface lo inet loopback
+
+auto wlan0
+iface wlan0 inet static
+address 192.168.4.1
+netmak 255.255.255.0
+wireless-mode ad-hoc
+wireless-essid SQRT
+wireless-channel 5
+wireless-power on
