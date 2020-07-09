@@ -44,6 +44,7 @@ def button_callback(channel):
 	wifi_switch()
 	
 if __name__ == "__main__":
+	init_GPIO()
 	wifi_switch()
 	GPIO.add_event_detect(BTN, GPIO.RISING, callback=button_callback)
 	try:
