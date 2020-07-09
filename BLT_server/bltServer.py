@@ -83,7 +83,7 @@ def run_server():
 				if len(data) == 0:
 					continue
 				if DEBUG:
-					logger.info("received [%s]" % data)
+					logger.info("received [%s]" % data.decode())
 				# Handle send request
 				if data.decode() == "send":
 					# Zip folder
@@ -120,6 +120,10 @@ def run_server():
 					subprocess.call(("hciconfig", "hci0", "piscan"))
 					data = "Name change requested."
 					client_sock.send(data)
+
+				else:
+					if DEBUG:
+						logger.info("Unknown command %s" % data.decode())
 
 			except IOError:
 				pass
