@@ -43,13 +43,13 @@ GPIO.output(LED, GPIO.LOW)
 def button_callback(channel):
 	logger.info("Button was pushed!")
 	# call threaded server
-	while True:
-		time.sleep(0.5)
-		GPIO.output(LED, GPIO.LOW)
-		time.sleep(0.5)
-		GPIO.output(LED, GPIO.HIGH)
+	#while True:
+	time.sleep(0.5)
+	GPIO.output(LED, GPIO.LOW)
+	time.sleep(0.5)
+	GPIO.output(LED, GPIO.HIGH)
 
-GPIO.add_event_detect(13, GPIO.RISING, callback=button_callback)
+GPIO.add_event_detect(BTN, GPIO.RISING, callback=button_callback)
 
 def take_snap():
 	with PiCamera(resolution=(1920, 1080)) as camera:
