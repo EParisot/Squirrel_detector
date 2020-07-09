@@ -37,6 +37,7 @@ def init_sensor():
 	i2c = busio.I2C(board.SCL, board.SDA)
 	sensor = adafruit_vl53l0x.VL53L0X(i2c)
 	sensor.measurement_timing_budget = 200000
+	return sensor
 
 BTN = 12
 BTNVCC = 13
@@ -84,7 +85,7 @@ def test_snap():
 		exit()
 
 if __name__ == "__main__":
-	init_sensor()
+	sensor = init_sensor()
 	init_GPIO()
 	GPIO.add_event_detect(BTN, GPIO.RISING, callback=button_callback)
 	try:
