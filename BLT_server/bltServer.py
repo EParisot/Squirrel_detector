@@ -26,6 +26,8 @@ if DEBUG:
 	stream_handler.setLevel(logging.DEBUG)
 	logger.addHandler(stream_handler)
 
+subprocess.call(("hciconfig", "hci0", "piscan"))
+time.sleep(1)
 server_sock=BluetoothSocket( RFCOMM )
 server_sock.bind(("",PORT_ANY))
 server_sock.listen(1)
