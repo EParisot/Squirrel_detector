@@ -35,8 +35,11 @@ sensor = adafruit_vl53l0x.VL53L0X(i2c)
 sensor.measurement_timing_budget = 200000
 
 BTN = 12
+BTNVCC = 13
 LED = 5
 GPIO.setup(BTN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(BTNVCC, GPIO.OUT)
+GPIO.output(BTNVCC, GPIO.HIGH)
 GPIO.setup(LED, GPIO.OUT)
 GPIO.output(LED, GPIO.LOW)
 
