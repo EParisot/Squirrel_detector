@@ -26,10 +26,10 @@ def wifi_switch():
 	global WIFI
 	if WIFI:
 		cmd = 'ifconfig wlan0 down'
-		#os.system(cmd)
+		os.system(cmd)
 	else:
 		cmd = 'ifconfig wlan0 up'
-		#os.system(cmd)
+		os.system(cmd)
 
 def button_callback(channel):
 	print("Button pushed ! Switching wifi state...")
