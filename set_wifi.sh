@@ -2,8 +2,13 @@
 
 # variables declarations
 country_code='FR'
+local_ssid='***********'
+local_psk='***********'
 ap_ssid='SQRT_AP'
 ap_psk='SQRT_AP_PASS'
+
+read -p "Please enter an existing Network SSID:" local_ssid
+read -s -p "Enter Password: " local_psk
 
 # disable debian networking and dhcpcd
 systemctl mask networking.service dhcpcd.service
@@ -20,6 +25,10 @@ ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
 	echo "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev";
 	echo "update_config=1";
 	echo "";
+	echo "network={";
+	printf '    ssid="%s"\n' "$local_ssid";
+	printf '    psk="%s"\n' "$local_psk";
+	echo "}"
 } > /etc/wpa_supplicant/wpa_supplicant-wlan0.conf
 
 {
