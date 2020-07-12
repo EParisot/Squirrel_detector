@@ -55,6 +55,9 @@ def wifi_switch(WIFI):
 	if WIFI:
 		cmd = 'ifconfig wlan0 down'
 		os.system(cmd)
+		time.sleep(1)
+		cmd = "systemctl start wpa_supplicant@wlan0.service"
+		os.system(cmd)
 	else:
 		cmd = 'ifconfig wlan0 up'
 		os.system(cmd)
