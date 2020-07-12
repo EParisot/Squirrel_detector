@@ -23,8 +23,8 @@ ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
 	echo "update_config=1";
 	echo "";
 	echo "network={";
-	printf "    ssid='%s'\n" "$local_ssid";
-	printf "    psk='%s'\n" "$local_psk";
+	printf '    ssid="%s"\n' "$local_ssid";
+	printf '    psk="%s"\n' "$local_psk";
 	echo "}"
 } > /etc/wpa_supplicant/wpa_supplicant-wlan0.conf
 
@@ -33,12 +33,12 @@ ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
 	echo "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev";
 	echo "update_config=1";
 	echo "network={";
-	printf "    ssid='%s'\n" "$ap_ssid";
+	printf '    ssid="%s"\n' "$ap_ssid";
 	echo "    mode=2";
 	echo "    key_mgmt=WPA-PSK";
 	echo "    proto=RSN WPA";
-	printf "    psk='%s'\n" "$ap_psk";
-	echo "    frequency=2412";
+	printf '    psk="%s"\n' "$ap_psk";
+	echo "   frequency=2412";
 	echo "}"
 } > /etc/wpa_supplicant/wpa_supplicant-ap0.conf
 # write network files
