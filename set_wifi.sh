@@ -61,7 +61,7 @@ ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
 
 # edit service
 systemctl disable wpa_supplicant@ap0.service
-sudo env SYSTEMD_EDITOR=tee systemctl edit --system --full wpa_supplicant@ap0.service < {
+systemd_file={
 	echo "[Unit]";
 	echo "Description=WPA supplicant daemon (interface-specific version)";
 	echo "Requires=sys-subsystem-net-devices-wlan0.device";
@@ -81,6 +81,7 @@ sudo env SYSTEMD_EDITOR=tee systemctl edit --system --full wpa_supplicant@ap0.se
 	echo "[Install]";
 	echo "Alias=multi-user.target.wants/wpa_supplicant@%i.service";
 }
+sudo env SYSTEMD_EDITOR=tee systemctl edit --system --full wpa_supplicant@ap0.service < "$systemd_file"
 # Select client mode on boot:
 sudo systemctl enable wpa_supplicant@wlan0.service
 sudo systemctl disable wpa_supplicant@ap0.service
