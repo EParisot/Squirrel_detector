@@ -58,6 +58,9 @@ def wifi_switch(WIFI):
 	else:
 		cmd = 'ifconfig wlan0 up'
 		os.system(cmd)
+		time.sleep(1)
+		cmd = "systemctl start wpa_supplicant@ap0.service"
+		os.system(cmd)
 	time.sleep(1)
 
 def button_callback(channel):
