@@ -1,11 +1,11 @@
 #! /bin/bash
 
 # variables declarations
-countryCode='FR'
+country_code='FR'
 local_ssid='FREEBOX_PARISOT' # TO REMOVE !!
 local_psk='christina1507' # TO REMOVE !
 ap_ssid='SQRT_AP'
-ap_psk='SQRT_AP_PASS'
+ap_psk='SQRT'
 
 # disable debian networking and dhcpcd
 systemctl mask networking.service dhcpcd.service
@@ -81,7 +81,7 @@ systemctl disable wpa_supplicant@ap0.service
 	echo "[Install]";
 	echo "Alias=multi-user.target.wants/wpa_supplicant@%i.service";
 } > /tmp/sqrt_systemd_conf
-sudo env SYSTEMD_EDITOR="cp /tmp/sqrt_systemd_conf" systemctl edit wpa_supplicant@ap0.service
+sudo env SYSTEMD_EDITOR="cp /tmp/sqrt_systemd_conf" systemctl edit --full wpa_supplicant@ap0.service
 # Select client mode on boot:
 sudo systemctl enable wpa_supplicant@wlan0.service
 sudo systemctl disable wpa_supplicant@ap0.service
