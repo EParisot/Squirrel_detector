@@ -2,8 +2,8 @@
 
 # variables declarations
 country_code='FR'
-local_ssid='FREEBOX_PARISOT' # TO REMOVE !!
-local_psk='christina1507' # TO REMOVE !
+local_ssid='***********' # TO EDIT !
+local_psk='***********' # TO EDIT !
 ap_ssid='SQRT_AP'
 ap_psk='SQRT_AP_PASS'
 
