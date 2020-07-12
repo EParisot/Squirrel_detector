@@ -69,6 +69,7 @@ def button_callback(channel):
 	
 def take_snap():
 	with PiCamera(resolution=(1920, 1080)) as camera:
+		camera.rotation = 180
 		filename = SRC_FOLDER + str(time.time()) + IMG_EXT
 		if DEBUG:
 			logger.info("captured %s" % filename)
@@ -101,8 +102,6 @@ if __name__ == "__main__":
 				GPIO.output(LED, GPIO.LOW)
 				time.sleep(1)
 				distance = sensor.range // 10
-				if DEBUG:
-					logger.debug(distance)
 				if distance > 0 and distance < threshold:
 					take_snap()
 	except Exception as e:
