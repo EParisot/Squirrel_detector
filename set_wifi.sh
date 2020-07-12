@@ -85,3 +85,5 @@ sudo env SYSTEMD_EDITOR="cp /tmp/sqrt_systemd_conf" systemctl edit wpa_supplican
 # Select client mode on boot:
 sudo systemctl enable wpa_supplicant@wlan0.service
 sudo systemctl disable wpa_supplicant@ap0.service
+
+echo "Wifi configured, you must reboot now !"
