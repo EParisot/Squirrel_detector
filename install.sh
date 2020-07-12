@@ -9,7 +9,7 @@ pip3 install -r requirements.txt
 # all Done !
 echo "Dependencies Installation Done !"
 # set Wifi
-./set_wifi.sh
+sudo ./set_wifi.sh
 # ask for reboot
 read -p "Reboot Now (needed to restart wifi settings) ? (y/n)" -n 1 -r
 echo    # (optional) move to a new line
