@@ -8,7 +8,6 @@ ap_ssid='SQRT_AP'
 ap_psk='SQRT_AP_PASS'
 
 # disable debian networking and dhcpcd
-sudo -Es
 systemctl mask networking.service dhcpcd.service
 sudo mv /etc/network/interfaces /etc/network/interfaces~
 sed -i '1i resolvconf=NO' /etc/resolvconf.conf
