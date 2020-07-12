@@ -7,8 +7,8 @@ local_psk='***********'
 ap_ssid='SQRT_AP'
 ap_psk='SQRT_AP_PASS'
 
-sudo read -p "Please enter an existing Network SSID:" local_ssid
-sudo read -s -p "Enter Password: " local_psk
+#sudo read -p "Please enter an existing Network SSID:" local_ssid
+#sudo read -s -p "Enter Password: " local_psk
 
 # disable debian networking and dhcpcd
 systemctl mask networking.service dhcpcd.service
