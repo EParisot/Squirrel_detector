@@ -9,12 +9,12 @@ ap_psk='SQRT_AP_PASS'
 ap_ssid_user=''
 
 read -p "Please enter an existing Network SSID (or let empty):" local_ssid
-if ![ $local_ssid -ge 0 ]; 
+if [ ! $local_ssid -ge 0 ]; 
 	then read -s -p "Enter Password: " local_psk;
 fi
 
 read -p "Please enter a name for your AP (or let empty to default 'SQRT_AP':'SQRT_AP_PASS'):" ap_ssid_user
-if ![ $ap_ssid_user -ge 0 ]; 
+if [ ! $ap_ssid_user -ge 0 ]; 
 	then ap_ssid=ap_ssid_user && read -s -p "Enter Password: " ap_psk; 
 fi
 
