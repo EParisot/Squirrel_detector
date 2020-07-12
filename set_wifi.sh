@@ -7,12 +7,12 @@ local_psk='***********'
 ap_ssid='SQRT_AP'
 ap_psk='SQRT_AP_PASS'
 
-#sudo read -p "Please enter an existing Network SSID:" local_ssid
-#sudo read -s -p "Enter Password: " local_psk
+read -p "Please enter an existing Network SSID:" local_ssid
+read -s -p "Enter Password: " local_psk
 
 # disable debian networking and dhcpcd
 systemctl mask networking.service dhcpcd.service
-sudo mv /etc/network/interfaces /etc/network/interfaces~
+mv /etc/network/interfaces /etc/network/interfaces~
 sed -i '1i resolvconf=NO' /etc/resolvconf.conf
 
 # enable systemd-networkd
@@ -84,9 +84,9 @@ systemctl disable wpa_supplicant@ap0.service
 	echo "[Install]";
 	echo "Alias=multi-user.target.wants/wpa_supplicant@%i.service";
 } > /tmp/sqrt_systemd_conf
-sudo env SYSTEMD_EDITOR="cp /tmp/sqrt_systemd_conf" systemctl edit --full wpa_supplicant@ap0.service
+env SYSTEMD_EDITOR="cp /tmp/sqrt_systemd_conf" systemctl edit --full wpa_supplicant@ap0.service
 # Select client mode on boot:
-sudo systemctl enable wpa_supplicant@wlan0.service
-sudo systemctl disable wpa_supplicant@ap0.service
+systemctl enable wpa_supplicant@wlan0.service
+systemctl disable wpa_supplicant@ap0.service
 
 echo "Wifi configured, you must reboot now !"
