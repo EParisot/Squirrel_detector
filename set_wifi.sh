@@ -2,8 +2,6 @@
 
 # variables declarations
 country_code='FR'
-local_ssid='***********' # TO EDIT !
-local_psk='***********' # TO EDIT !
 ap_ssid='SQRT_AP'
 ap_psk='SQRT_AP_PASS'
 
@@ -22,10 +20,6 @@ ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
 	echo "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev";
 	echo "update_config=1";
 	echo "";
-	echo "network={";
-	printf '    ssid="%s"\n' "$local_ssid";
-	printf '    psk="%s"\n' "$local_psk";
-	echo "}"
 } > /etc/wpa_supplicant/wpa_supplicant-wlan0.conf
 
 {
