@@ -5,7 +5,7 @@ country_code='FR'
 local_ssid='FREEBOX_PARISOT' # TO REMOVE !!
 local_psk='christina1507' # TO REMOVE !
 ap_ssid='SQRT_AP'
-ap_psk='SQRT'
+ap_psk='SQRT_AP_PASS'
 
 # disable debian networking and dhcpcd
 systemctl mask networking.service dhcpcd.service
