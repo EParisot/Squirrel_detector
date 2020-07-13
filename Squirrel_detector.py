@@ -51,6 +51,10 @@ def init_GPIO():
 	GPIO.output(LED, GPIO.LOW)
 
 def clean_all():
+	cmd = 'ifconfig wlan0 up'
+	os.system(cmd)
+	time.sleep(1)
+	cmd = "systemctl start wpa_supplicant@ap0.service"
 	GPIO.output(LED, GPIO.LOW)
 	GPIO.output(BTNVCC, GPIO.LOW)
 	GPIO.cleanup()
