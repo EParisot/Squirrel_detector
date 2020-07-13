@@ -25,7 +25,7 @@ if DEBUG:
 	stream_handler.setLevel(logging.DEBUG)
 	logger.addHandler(stream_handler)
 
-SRC_FOLDER = "/home/pi/Squirrel_Detector/out/"
+SRC_FOLDER = "/home/pi/Squirrel_detector/out/"
 IMG_EXT = ".png"
 WIFI = True
 threshold = 45
