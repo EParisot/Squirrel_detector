@@ -31,10 +31,14 @@ WIFI = True
 threshold = 45
 
 def init_sensor():
-	i2c = busio.I2C(board.SCL, board.SDA)
-	sensor = adafruit_vl53l0x.VL53L0X(i2c)
-	sensor.measurement_timing_budget = 200000
-	return sensor
+	try:
+		i2c = busio.I2C(board.SCL, board.SDA)
+		sensor = adafruit_vl53l0x.VL53L0X(i2c)
+		sensor.measurement_timing_budget = 200000
+		return sensor
+	except Exception as e:
+		if DEBUG:
+			logger.info("Error setting dist sensor %s" % str(e))
 
 BTN = 12
 BTNVCC = 13
@@ -53,12 +57,16 @@ def clean_all():
 
 def wifi_switch(WIFI):
 	if WIFI:
+		if DEBUG:
+			logger.info("Disactivate Wifi AP")
 		cmd = 'ifconfig wlan0 down'
 		os.system(cmd)
 		time.sleep(1)
 		cmd = "systemctl start wpa_supplicant@wlan0.service"
 		os.system(cmd)
 	else:
+		if DEBUG:
+			logger.info("Activate Wifi AP")
 		cmd = 'ifconfig wlan0 up'
 		os.system(cmd)
 		time.sleep(1)
