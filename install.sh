@@ -20,7 +20,6 @@ if [ -z "$CUR_GPU_MEM" ] || [ "$CUR_GPU_MEM" -lt 128 ]; then
 fi
 sed /boot/config.txt -i -e "s/^startx/#startx/"
 sed /boot/config.txt -i -e "s/^fixup_file/#fixup_file/"
-
 # set Wifi
 ./set_wifi.sh
 # set crontab
