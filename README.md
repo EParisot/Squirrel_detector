@@ -31,6 +31,7 @@ scheme to come...
 ```
 sudo apt-get install git
 git clone https://github.com/EParisot/Squirrel_detector.git
+cd Squirrel_detector
 sudo ./install.sh
 ```
 (You will be asked for some interractions while setting wifi... stay focused !)
