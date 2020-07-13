@@ -99,6 +99,8 @@ def test_snap():
 		exit()
 
 if __name__ == "__main__":
+	if DEBUG:
+		logger.info("SQRT Started...")
 	init_GPIO()
 	sensor = init_sensor()
 	wifi_switch(WIFI)
