@@ -10,6 +10,9 @@ pip3 install -r requirements.txt
 # activate camera
 echo -e "\e[33mActivating Camera... \e[0m"
 raspi-config nonint do_camera 0
+# activate i2c
+echo -e "\e[33mActivating i2c... \e[0m"
+raspi-config nonint do_i2c 0
 # set crontab
 echo -e "\e[33mAdd crontab... \e[0m"
 (crontab -l -u pi ; echo "@reboot cd Squirrel_detector && sudo python3 Squirrel_detector.py &") | sort - | uniq - | crontab - -u pi

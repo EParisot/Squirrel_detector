@@ -35,10 +35,10 @@ def init_sensor():
 		i2c = busio.I2C(board.SCL, board.SDA)
 		sensor = adafruit_vl53l0x.VL53L0X(i2c)
 		sensor.measurement_timing_budget = 200000
-		return sensor
 	except Exception as e:
 		if DEBUG:
 			logger.info("Error setting dist sensor %s" % str(e))
+	return sensor
 
 BTN = 12
 BTNVCC = 13
