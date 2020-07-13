@@ -79,9 +79,6 @@ def wifi_switch(WIFI):
 			logger.info("Disactivate Wifi AP")
 		cmd = 'ifconfig wlan0 down'
 		os.system(cmd)
-		time.sleep(1)
-		cmd = "systemctl start wpa_supplicant@wlan0.service"
-		os.system(cmd)
 	else:
 		if DEBUG:
 			logger.info("Activate Wifi AP")
@@ -129,9 +126,9 @@ if __name__ == "__main__":
 		light = light_sensor()
 		while True:
 			if light > 10000:
-				time.sleep(60 * 10)
 				if DEBUG:
 					logger.debug("Light level = %s" % light)
+				time.sleep(60 * 10)
 				continue
 			if WIFI:
 				time.sleep(0.5)
