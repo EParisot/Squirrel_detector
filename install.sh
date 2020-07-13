@@ -15,7 +15,7 @@ echo -e "\e[33mActivating i2c... \e[0m"
 raspi-config nonint do_i2c 0
 # set crontab
 echo -e "\e[33mAdd crontab... \e[0m"
-(crontab -l -u pi ; echo "@reboot cd Squirrel_detector && sudo python3 Squirrel_detector.py &") | sort - | uniq - | crontab - -u pi
+( (crontab -l -u pi 2>/dev/null || echo "") ; echo "@reboot cd Squirrel_detector && sudo python3 Squirrel_detector.py &") | sort - | uniq - | crontab - -u pi
 # set Wifi
 echo -e "\e[33mSet Wifi... \e[0m"
 ./set_wifi.sh
