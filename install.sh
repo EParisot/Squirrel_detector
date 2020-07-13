@@ -16,7 +16,7 @@ raspi-config nonint do_i2c 0
 # disactivate HDMI
 echo -e "\e[33mDisactivating HDMI... (.zshrc, /usr/bin/tvservice -p to reactivate)\e[0m"
 /usr/bin/tvservice -o
-if ! (grep -R "/usr/bin/tvservice -o" /home/pi/.zshrc 2>/dev/null || 0)
+if ! (grep -R "/usr/bin/tvservice -o" /home/pi/.zshrc 2>/dev/null)
 then
     echo -e "\n/usr/bin/tvservice -o" >> /home/pi/.zshrc
 fi
