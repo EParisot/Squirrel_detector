@@ -4,6 +4,8 @@
 ![](imgs/1591654076.6840587.jpg)
 ![](imgs/download_20200602_151311.jpg)
 
+#### More pictures [HERE](https://photos.app.goo.gl/eW7Maa1WmrSnC65B8)
+
 ## Material:
 * RaspberryPi + SD card : [Shop](https://www.amazon.fr/Raspberry-Pi-3-Mod%C3%A8le-B-Carte-m%C3%A8re/dp/B07BDR5PDW/ref=sr_1_10?__mk_fr_FR=%C3%85M%C3%85%C5%BD%C3%95%C3%91&dchild=1&keywords=raspberry&qid=1591701953&s=computers&sr=1-10)
 (any RPi model will fit, maybe avoid using a RPi4 (overkill + heat))
