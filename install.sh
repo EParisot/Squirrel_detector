@@ -16,7 +16,7 @@ echo -e "\e[33mSet Wifi... \e[0m"
 ./set_wifi.sh
 echo -e "\e[33mAdd crontab... \e[0m"
 # set crontab
-(crontab -l ; echo "@reboot cd Squirrel_detector && sudo python3 Squirrel_detector.py &") | sort - | uniq - | crontab -
+(crontab -l -u pi ; echo "@reboot cd Squirrel_detector && sudo python3 Squirrel_detector.py &") | sort - | uniq - | crontab - -u pi
 # ask for reboot
 read -p "Reboot Now (needed to restart wifi settings) ? (y/n)" -n 1 -r
 echo    # (optional) move to a new line
