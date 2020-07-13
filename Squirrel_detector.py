@@ -43,12 +43,26 @@ def init_sensor():
 BTN = 12
 BTNVCC = 13
 LED = 5
+LIGHT = 24
 def init_GPIO():
 	GPIO.setup(BTN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 	GPIO.setup(BTNVCC, GPIO.OUT)
 	GPIO.output(BTNVCC, GPIO.HIGH)
 	GPIO.setup(LED, GPIO.OUT)
 	GPIO.output(LED, GPIO.LOW)
+
+def light_sensor():
+	count = 0
+	#Output on the pin for 
+	GPIO.setup(LIGHT, GPIO.OUT)
+	GPIO.output(LIGHT, GPIO.LOW)
+	time.sleep(0.1)
+	#Change the pin back to input
+	GPIO.setup(LIGHT, GPIO.IN)
+	#Count until the pin goes high
+	while (GPIO.input(LIGHT) == GPIO.LOW):
+		count += 1
+	return count
 
 def clean_all():
 	cmd = 'ifconfig wlan0 up'
@@ -113,6 +127,9 @@ if __name__ == "__main__":
 	try:
 		test_snap()
 		while True:
+			if light_sensor() > 10000:
+				time.sleep(60 * 10)
+				continue
 			if WIFI:
 				time.sleep(0.5)
 				GPIO.output(LED, GPIO.HIGH)
