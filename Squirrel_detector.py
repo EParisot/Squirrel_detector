@@ -123,8 +123,8 @@ if __name__ == "__main__":
 	GPIO.add_event_detect(BTN, GPIO.RISING, callback=button_callback)
 	try:
 		test_snap()
-		light = light_sensor()
 		while True:
+			light = light_sensor()
 			if light > 10000:
 				if DEBUG:
 					logger.debug("Light level = %s" % light)
