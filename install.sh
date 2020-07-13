@@ -10,6 +10,8 @@ pip3 install -r requirements.txt
 echo "Dependencies Installation Done !"
 # set Wifi
 ./set_wifi.sh
+# set crontab
+echo "@reboot cd /home/pi/Squirrel_detector && sudo python3 Squirrel_detector.py &" > /etc/cron.d/sqrt_cron
 # ask for reboot
 read -p "Reboot Now (needed to restart wifi settings) ? (y/n)" -n 1 -r
 echo    # (optional) move to a new line
