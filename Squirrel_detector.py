@@ -124,6 +124,7 @@ if __name__ == "__main__":
 	wifi_switch(WIFI)
 	WIFI = False
 	GPIO.add_event_detect(BTN, GPIO.RISING, callback=button_callback)
+	start_AP = None
 	try:
 		test_snap()
 		while True:
@@ -138,6 +139,11 @@ if __name__ == "__main__":
 				GPIO.output(LED, GPIO.HIGH)
 				time.sleep(0.5)
 				GPIO.output(LED, GPIO.LOW)
+				if start_AP == None:
+					start_AP = time.time()
+				elif time.time() - start_AP >= 60 * 15:
+					start_AP = None
+					wifi_switch(WIFI)
 			else:
 				GPIO.output(LED, GPIO.LOW)
 				time.sleep(1)
