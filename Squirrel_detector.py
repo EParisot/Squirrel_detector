@@ -77,6 +77,9 @@ def wifi_switch(WIFI):
 	if WIFI:
 		if DEBUG:
 			logger.info("Disactivate Wifi AP")
+		cmd = "systemctl start wpa_supplicant@wlan0.service"
+		os.system(cmd)
+		time.sleep(1)
 		cmd = 'ifconfig wlan0 down'
 		os.system(cmd)
 	else:
