@@ -9,7 +9,7 @@ ap_psk='SQRT_AP_PASS'
 ap_ssid_user=''
 
 read -p "Please enter a valid country code (2 UPPERCASE letters) \n(check here to find yours: https://www.arubanetworks.com/techdocs/InstantWenger_Mobile/Advanced/Content/Instant%20User%20Guide%20-%20volumes/Country_Codes_List.htm#regulatory_domain_3737302751_1017918): " country_code;
-while [ ${#country_code} -ne 0 ];
+while ! [ ${#country_code} -ne 0 ];
 	do read -p "Country code can't be blank: " country_code;
 done
 
