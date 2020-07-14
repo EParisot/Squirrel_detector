@@ -91,13 +91,13 @@ def wifi_switch(WIFI):
 		cmd = "systemctl start wpa_supplicant@ap0.service"
 		os.system(cmd)
 	time.sleep(1)
-	WIFI = not WIFI
 
 def button_callback(channel):
 	global WIFI
 	if DEBUG:
 		logger.info("Button pushed ! Switching wifi state to %s" % ("OFF" if WIFI else "ON"))
 	wifi_switch(WIFI)
+	WIFI = not WIFI
 	
 def take_snap():
 	with PiCamera(resolution=(1920, 1080)) as camera:
@@ -122,6 +122,7 @@ if __name__ == "__main__":
 	init_GPIO()
 	sensor = init_sensor()
 	wifi_switch(WIFI)
+	WIFI = False
 	GPIO.add_event_detect(BTN, GPIO.RISING, callback=button_callback)
 	start_AP = None
 	try:
@@ -143,6 +144,7 @@ if __name__ == "__main__":
 				elif time.time() - start_AP >= 60 * 15:
 					start_AP = None
 					wifi_switch(WIFI)
+					WIFI = False
 			else:
 				GPIO.output(LED, GPIO.LOW)
 				time.sleep(1)
