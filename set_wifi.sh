@@ -2,8 +2,8 @@
 
 # variables declarations
 country_code='FR'
-local_ssid='***********'
-local_psk='***********'
+local_ssid=''
+local_psk=''
 ap_ssid='SQRT_AP'
 ap_psk='SQRT_AP_PASS'
 ap_ssid_user=''
