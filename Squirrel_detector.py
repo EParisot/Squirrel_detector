@@ -93,10 +93,12 @@ def wifi_switch(WIFI):
 	time.sleep(1)
 
 def button_callback(channel):
-	global WIFI
+	global WIFI, start_AP
 	if DEBUG:
 		logger.info("Button pushed ! Switching wifi state to %s" % ("OFF" if WIFI else "ON"))
 	wifi_switch(WIFI)
+	if WIFI:
+		start_AP = None
 	WIFI = not WIFI
 	
 def take_snap():
@@ -129,9 +131,9 @@ if __name__ == "__main__":
 		test_snap()
 		while True:
 			light = light_sensor()
+			if DEBUG:
+				logger.debug("Light level = %s" % light)
 			if light > 10000:
-				if DEBUG:
-					logger.debug("Light level = %s" % light)
 				time.sleep(60 * 10)
 				continue
 			if WIFI:
