@@ -93,7 +93,6 @@ def wifi_switch(WIFI):
 	time.sleep(1)
 
 def button_callback(channel):
-	time.sleep(0.1)
 	global WIFI, start_AP
 	if DEBUG:
 		logger.info("Button pushed ! Switching wifi state to %s" % ("OFF" if WIFI else "ON"))
