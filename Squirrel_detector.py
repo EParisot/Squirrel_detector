@@ -110,19 +110,16 @@ def wifi_switch(WIFI):
 		time.sleep(1)
 		cmd = "systemctl start wpa_supplicant@ap0.service"
 		os.system(cmd)
+	time.sleep(1)
 
-last_trigger = time.time()
 def button_callback(channel):
-	global WIFI, start_AP, last_trigger
+	global WIFI, start_AP
 	if DEBUG:
 		logger.info("Button pushed ! Switching wifi state to %s" % ("OFF" if WIFI else "ON"))
-	curr_trigger = time.time()
-	if curr_trigger - last_trigger > 0.5:
-		wifi_switch(WIFI)
-		if WIFI:
-			start_AP = None
-		WIFI = not WIFI
-	last_trigger = curr_trigger
+	wifi_switch(WIFI)
+	if WIFI:
+		start_AP = None
+	WIFI = not WIFI
 
 def take_snap():
 	with PiCamera(resolution=(1920, 1080)) as camera:
