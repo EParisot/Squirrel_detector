@@ -8,7 +8,7 @@ import board
 import busio
 import RPi.GPIO as GPIO
 
-DEBUG = True
+DEBUG = False
 
 if DEBUG:
 	import logging
@@ -29,21 +29,41 @@ SRC_FOLDER = "/home/pi/Squirrel_detector/out/"
 IMG_EXT = ".png"
 WIFI = True
 threshold = 45
+BTN = 12
+BTNVCC = 13
+LED = 5
+LIGHT = 24
 
 def init_sensor():
+	global threshold
 	try:
 		i2c = busio.I2C(board.SCL, board.SDA)
 		sensor = adafruit_vl53l0x.VL53L0X(i2c)
 		sensor.measurement_timing_budget = 200000
+		thrs = []
+		i = 5
+		while i > 0:
+			time.sleep(0.5)
+			GPIO.output(LED, GPIO.HIGH)
+			time.sleep(0.5)
+			GPIO.output(LED, GPIO.LOW)
+			distance = sensor.range // 10
+			if DEBUG:
+				logger.debug("distance = %d" % distance)
+			if 0 < distance < 50:
+				thrs.append(distance)
+			i -= 1
+		if len(thrs):
+			new_thr = sum(thrs) // len(thrs)
+			if 0 < new_thr <= 50:
+				threshold = new_thr
+		if DEBUG:
+			logger.debug("threshold = %d" % threshold)
 	except Exception as e:
 		if DEBUG:
 			logger.info("Error setting dist sensor %s" % str(e))
 	return sensor
 
-BTN = 12
-BTNVCC = 13
-LED = 5
-LIGHT = 24
 def init_GPIO():
 	GPIO.setup(BTN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 	GPIO.setup(BTNVCC, GPIO.OUT)
@@ -90,17 +110,20 @@ def wifi_switch(WIFI):
 		time.sleep(1)
 		cmd = "systemctl start wpa_supplicant@ap0.service"
 		os.system(cmd)
-	time.sleep(1)
 
+last_trigger = time.time()
 def button_callback(channel):
-	global WIFI, start_AP
+	global WIFI, start_AP, last_trigger
 	if DEBUG:
 		logger.info("Button pushed ! Switching wifi state to %s" % ("OFF" if WIFI else "ON"))
-	wifi_switch(WIFI)
-	if WIFI:
-		start_AP = None
-	WIFI = not WIFI
-	
+	curr_trigger = time.time()
+	if curr_trigger - last_trigger > 0.5:
+		wifi_switch(WIFI)
+		if WIFI:
+			start_AP = None
+		WIFI = not WIFI
+	last_trigger = curr_trigger
+
 def take_snap():
 	with PiCamera(resolution=(1920, 1080)) as camera:
 		camera.rotation = 180
@@ -132,8 +155,8 @@ if __name__ == "__main__":
 		while True:
 			light = light_sensor()
 			if DEBUG:
-				logger.debug("Light level = %s" % light)
-			if light > 10000:
+				logger.debug("Light level = %d" % light)
+			if not WIFI and light > 10000:
 				time.sleep(60 * 10)
 				continue
 			if WIFI:
@@ -147,11 +170,18 @@ if __name__ == "__main__":
 					start_AP = None
 					wifi_switch(WIFI)
 					WIFI = False
+				if DEBUG:
+					distance = sensor.range // 10
+					logger.debug("distance = %d" % distance)
 			else:
 				GPIO.output(LED, GPIO.LOW)
 				time.sleep(1)
 				distance = sensor.range // 10
+				if DEBUG:
+					logger.debug("distance = %d" % distance)
 				if distance > 0 and distance < threshold:
+					if DEBUG:
+						logger.debug("SNAP")
 					take_snap()
 	except Exception as e:
 		if DEBUG:
