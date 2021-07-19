@@ -113,6 +113,10 @@ def wifi_switch(WIFI):
 	time.sleep(1)
 
 def button_callback(channel):
+	# avoid button bouncing
+	time.sleep(0.1)
+	if GPIO.input(BTN) == GPIO.LOW:
+		return
 	global WIFI, start_AP
 	if DEBUG:
 		logger.info("Button pushed ! Switching wifi state to %s" % ("OFF" if WIFI else "ON"))
@@ -137,6 +141,9 @@ def test_snap():
 			logger.debug(str(e))
 		clean_all()
 		exit()
+	GPIO.output(LED, GPIO.HIGH)
+	time.sleep(3)
+	GPIO.output(LED, GPIO.LOW)
 
 if __name__ == "__main__":
 	if DEBUG:
