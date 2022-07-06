@@ -77,7 +77,7 @@ def light_sensor():
 	#Change the pin back to input
 	GPIO.setup(LIGHT, GPIO.IN)
 	#Count until the pin goes high
-	while (GPIO.input(LIGHT) == GPIO.LOW) or count > 10000:
+	while (GPIO.input(LIGHT) == GPIO.LOW) and count <= 10000:
 		count += 1
 	return count
 
@@ -154,6 +154,7 @@ if __name__ == "__main__":
 			if DEBUG:
 				logger.debug("Light level = %d" % light)
 			if not WIFI and light > 10000:
+				logger.info("Going to sleep for 10 min...")
 				time.sleep(60 * 10)
 				continue
 			if WIFI == True:
