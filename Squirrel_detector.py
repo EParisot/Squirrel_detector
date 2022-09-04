@@ -164,8 +164,8 @@ if __name__ == "__main__":
 				GPIO.output(LED, GPIO.LOW)
 				if start_AP != None and time.time() - start_AP >= 60 * 15:
 					start_AP = None
-					wifi_switch()
 					WIFI = False
+					wifi_switch()
 				if DEBUG:
 					distance = sensor.range // 10
 					logger.debug("distance = %d" % distance)
