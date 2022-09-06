@@ -7,6 +7,8 @@ apt-get install zsh python3-dev python3-setuptools python3-pip python3-picamera 
 python3 -c 'import sys; print("Please update your Python version to 3.5 or later...", exit(1)) if sys.version_info.major < 3 or sys.version_info.minor < 5 else print("Python version checked")'
 # package dep
 pip3 install -r requirements.txt
+# allow shutdown without being root
+chmod 4755 /sbin/shutdown
 # activate camera
 echo -e "\e[33mActivating Camera... (raspi-config)\e[0m"
 raspi-config nonint do_camera 0
